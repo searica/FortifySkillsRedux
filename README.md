@@ -49,7 +49,7 @@ Your Fortify skill level will be displayed in parenthesis in your skill list nex
 - Default value: 0.8
 
 **EnableIndividualSettings**
-- Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the individual configuration settings are used for each vanilla skill (skills added by mods are always modified based on the XPMult value from the Mechanics section).
+- Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the XPMult values from the IndividualSKills section are used for each vanilla skill (skills added by mods are always modified based on the XPMult value from the Mechanics section).
 - Default value: false.
 
 ### IndividualSkills Section
