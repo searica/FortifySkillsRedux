@@ -25,7 +25,7 @@ namespace FortifySkillsRedux
         public static ConfigEntry<bool> LockConfiguration { get; private set; }
         public static ConfigEntry<float> XPMult { get; private set; }
         public static ConfigEntry<float> FortifyLevelRate { get; private set; }
-        public static ConfigEntry<float> FortifyMaxRate { get; private set; }
+        public static ConfigEntry<float> FortifyXPRateMax { get; private set; }
         public static ConfigEntry<bool> EnableIndividualSettings { get; private set; }
 
         public static Dictionary<string, ConfigEntry<float>> SkillConfigEntries = new();
@@ -99,13 +99,13 @@ namespace FortifySkillsRedux
                 MechanicsSection,
                 "FortifyXPPerLevelRate",
                 0.1f,
-                new ConfigDescription("Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a perctange of the XP earned towards the active skill after the XPMult value has been applied. Default:0.1",
+                new ConfigDescription("Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill after the XPMult value has been applied. Default:0.1",
                 new AcceptableValueRange<float>(0.0f, 1f))
             );
 
-            FortifyMaxRate = BindConfig(
+            FortifyXPRateMax = BindConfig(
                 MechanicsSection,
-                "FortifyMaxXPRate",
+                "FortifyXPRateMax",
                 0.8f,
                 new ConfigDescription("Used to control the maximum rate of XP earned for the fortified skill. Caps FortifyXPPerLevelRate. Values less than 1 mean the fortify skill will always increase more slowly than the active level. 0.8=Will gain a max of 80% of the XP gained for the active skill. Default 0.8",
                 new AcceptableValueRange<float>(0.0f, 2.0f))
@@ -115,7 +115,10 @@ namespace FortifySkillsRedux
                 MechanicsSection,
                 "EnableIndividualSettings",
                 false,
-                "Used to toggle whether the Global XPMult value is used for all skills or if the inidividual configuration settings are used."
+                new ConfigDescription(
+                    "Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the XPMult values from the IndividualSKills section are used for each vanilla skill (skills added by mods are always modified based on the XPMult value from the Mechanics section).",
+                    AcceptableToggleValuesList
+                )
             );
 
             // Create config entries for individual skills in the base game

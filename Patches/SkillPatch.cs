@@ -42,7 +42,7 @@ namespace FortifySkillsRedux.Patches
                 fortSkill.FortifyAccumulator += xp * Mathf.Clamp(
                         (__instance.m_level - fortSkill.FortifyLevel) * PluginConfig.FortifyLevelRate.Value,
                         0.0f,
-                        PluginConfig.FortifyMaxRate.Value
+                        PluginConfig.FortifyXPRateMax.Value
                     );
 #if DEBUG
                 Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator);

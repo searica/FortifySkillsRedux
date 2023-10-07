@@ -2,9 +2,9 @@
   "name": "FortifySkillsRedux",
   "author": "Searica",
   "version_number": "1.0.0",
-  "website_url": "",
-  "description": "",
+  "website_url": "https://github.com/searica/FortifySkillsRedux",
+  "description": "FortifySkillsRedux changes skill loss on death in Valheim. Instead of being punished for dying by losing 5% of each skill, you are rewarded for staying alive longer. Each skill has a new fortified skill level that skills reset to on death.",
   "dependencies": [
-
+    "denikson-BepInExPack_Valheim-5.4.2200"
   ]
 }
