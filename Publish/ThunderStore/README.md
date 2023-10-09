@@ -59,10 +59,16 @@ There is one entry in this section for each skill in the Vanilla game.
 - XP Multiplier for {skillName} skill. Only used if EnableIndividualSettings is set to true.
 - Default value: 1.5
 
+
+**ModdedSkillXPMult**
+- XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multipier settings). Only used if EnableIndividualSettings is set to true.
+- Default value: 1.0
+
+
 ## Compatibility
 - All skill mods by Smoothbrain.
   - The XP multiplier settings in this mod stacks multiplicatively with the XP multiplier in Smoothbrain's skill mods.
-  - If you set EnableIndividualSettings to True, then you can set XPMult to 1.0 so that it does not impact the XP gain rates of Smoothbrain's skill mods while still letting you customize the skill gain rates for Vanilla skills via the IndividualSkills XP multiplier settings.
+  - If you set EnableIndividualSettings to True and keep ModdedSkillXPMult set to 1.0 it will not impact the XP gain rates of Smoothbrain's skill mods while still letting you customize the skill gain rates for Vanilla skills via the IndividualSkills XP multiplier settings.
 
 **Incompatibilities**
 - May have issues with anything that changes the SkillsDialog text in-game.
