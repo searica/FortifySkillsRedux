@@ -14,9 +14,16 @@ namespace FortifySkillsRedux.Patches
             Log.LogInfo("Skill.Raise.Prefix()");
 #endif
             // modify XP gain rate
-            if (PluginConfig.EnableIndividualSettings.Value && PluginConfig.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
+            if (PluginConfig.EnableIndividualSettings.Value)
             {
-                factor *= PluginConfig.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
+                if (PluginConfig.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
+                {
+                    factor *= PluginConfig.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
+                }
+                else
+                {
+                    factor *= PluginConfig.ModdedSkillXPMult.Value;
+                }
             }
             else
             {
@@ -66,7 +73,7 @@ namespace FortifySkillsRedux.Patches
 
                     // Display level up message
                     MessageHud.MessageType type = (int)fortSkill.FortifyLevel == 0 ? MessageHud.MessageType.Center : MessageHud.MessageType.TopLeft;
-     
+
                     player.Message(
                         type,
                         $"Fortified skill improved $skill_{fortSkill.SkillInfo.m_skill.ToString().ToLower()}: {(int)fortSkill.FortifyLevel}",

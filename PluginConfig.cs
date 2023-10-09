@@ -20,13 +20,15 @@ namespace FortifySkillsRedux
         public const string MainSection = "\u200BGlobal";
         public const string MechanicsSection = "General";
         public const string SkillsSection = "IndividualSkills";
-        
+
         public static ConfigEntry<bool> IsModEnabled { get; private set; }
         public static ConfigEntry<bool> LockConfiguration { get; private set; }
         public static ConfigEntry<float> XPMult { get; private set; }
         public static ConfigEntry<float> FortifyLevelRate { get; private set; }
         public static ConfigEntry<float> FortifyXPRateMax { get; private set; }
         public static ConfigEntry<bool> EnableIndividualSettings { get; private set; }
+
+        public static ConfigEntry<float> ModdedSkillXPMult { get; private set; }
 
         public static Dictionary<string, ConfigEntry<float>> SkillConfigEntries = new();
 
@@ -38,7 +40,7 @@ namespace FortifySkillsRedux
             ConfigEntry<T> configEntry = configFile.Bind(group, name, value, description);
 
             // ServerSync Settings
-            SyncedConfigEntry < T > syncedConfigEntry = configSync.AddConfigEntry(configEntry);
+            SyncedConfigEntry<T> syncedConfigEntry = configSync.AddConfigEntry(configEntry);
             syncedConfigEntry.SynchronizedConfig = synchronizedSetting;
 
             return configEntry;
@@ -116,7 +118,7 @@ namespace FortifySkillsRedux
                 "EnableIndividualSettings",
                 false,
                 new ConfigDescription(
-                    "Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the XPMult values from the IndividualSKills section are used for each vanilla skill (skills added by mods are always modified based on the XPMult value from the Mechanics section).",
+                    "Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the XPMult values from the IndividualSKills section are used for each vanilla skill.",
                     AcceptableToggleValuesList
                 )
             );
@@ -148,6 +150,14 @@ namespace FortifySkillsRedux
                     );
                 }
             }
+
+            ModdedSkillXPMult = BindConfig(
+                SkillsSection,
+                "ModdedSkillXPMult",
+                1.0f,
+                new ConfigDescription("XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multipier settings). Only used if EnableIndividualSettings is set to true.",
+                new AcceptableValueRange<float>(0.0f, 10f))
+            );
             Save();
         }
 
