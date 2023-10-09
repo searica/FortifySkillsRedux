@@ -26,12 +26,6 @@
     <DefineConstants>$(DefineConstants);DefineConstants</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="CHANGELOG.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CHANGELOG.md" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
