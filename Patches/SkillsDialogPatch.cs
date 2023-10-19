@@ -4,24 +4,23 @@ using TMPro;
 
 namespace FortifySkillsRedux
 {
-
     [HarmonyPatch(typeof(SkillsDialog))]
     public static class SkillsDialogPatch
     {
-
         [HarmonyPostfix]
         [HarmonyPatch(nameof(SkillsDialog.Setup))]
         private static void SkillsDialogSetupPostfix(SkillsDialog __instance, Player player)
         {
-#if DEBUG
-            Log.LogInfo("SkillsDialog.Setup.Postfix()");
-#endif
+            if (PluginConfig.IsVerbosityMedium)
+            {
+                Log.LogInfo("SkillsDialog.Setup.Postfix()");
+            }
             List<Skills.Skill> skillList = player.GetSkills().GetSkillList();
 
             foreach (var element in __instance.m_elements)
             {
                 string description = element.GetComponentInChildren<UITooltip>().m_text;
-                foreach(var skill in skillList)
+                foreach (var skill in skillList)
                 {
                     if (skill.m_info.m_description == description)
                     {
@@ -35,9 +34,10 @@ namespace FortifySkillsRedux
                         }
                         else
                         {
-#if DEBUG
-                            Log.LogInfo($"No Fortified skill for: {skill.m_info.m_skill}");
-#endif
+                            if (PluginConfig.IsVerbosityMedium)
+                            {
+                                Log.LogInfo($"No Fortified skill for: {skill.m_info.m_skill}");
+                            }
                         }
 
                         break;

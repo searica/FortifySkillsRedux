@@ -10,9 +10,10 @@ namespace FortifySkillsRedux.Patches
         [HarmonyPatch(nameof(Skills.Skill.Raise))]
         private static void SkillRaisePrefix(Skills.Skill __instance, ref float factor)
         {
-#if DEBUG
-            Log.LogInfo("Skill.Raise.Prefix()");
-#endif
+            if (PluginConfig.IsVerbosityMedium)
+            {
+                Log.LogInfo("Skill.Raise.Prefix()");
+            }
             // modify XP gain rate
             if (PluginConfig.EnableIndividualSettings.Value)
             {
@@ -51,18 +52,20 @@ namespace FortifySkillsRedux.Patches
                         0.0f,
                         PluginConfig.FortifyXPRateMax.Value
                     );
-#if DEBUG
-                Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator);
-#endif
+                if (PluginConfig.IsVerbosityMedium)
+                {
+                    Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator);
+                }
                 if (fortSkill.FortifyAccumulator >= GetLevelUpXpRequirement(fortSkill.FortifyLevel))
                 {
                     // Level up Fortify skill
                     fortSkill.FortifyLevel = Mathf.Clamp(fortSkill.FortifyLevel + 1f, 0f, 100f);
                     fortSkill.FortifyAccumulator = 0f;
 
-#if DEBUG
-                    Debug.Log("Fortify level:" + fortSkill.FortifyLevel);
-#endif
+                    if (PluginConfig.IsVerbosityMedium)
+                    {
+                        Debug.Log("Fortify level:" + fortSkill.FortifyLevel);
+                    }
                     // Display level up effect
                     var player = Player.m_localPlayer;
                     GameObject vfx_prefab = ZNetScene.instance.GetPrefab("vfx_ColdBall_launch");
@@ -80,17 +83,13 @@ namespace FortifySkillsRedux.Patches
                         0,
                         fortSkill.SkillInfo.m_icon
                     );
-
-
                 }
             }
-
         }
 
         private static float GetLevelUpXpRequirement(float level)
         {
             return Mathf.Pow(level + 1f, 1.5f) * 0.5f + 0.5f;
         }
-
     }
 }
