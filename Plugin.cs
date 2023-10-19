@@ -1,7 +1,7 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using System.Reflection;
 using Jotunn.Utils;
+using System.Reflection;
 
 namespace FortifySkillsRedux
 {
