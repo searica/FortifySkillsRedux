@@ -8,7 +8,7 @@ FortifySkillsRedux is a remake of the FortifySkills mod for Valheim that changes
 
 **Manual**
 - Download and install [BepInEx Pack](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
-- Download and install [Jötunn](https://valheim.thunderstore.io/package/ValheimModding/Jotunn/)
+- Download and install [Jotunn](https://valheim.thunderstore.io/package/ValheimModding/Jotunn/)
 - Download this mod and move the "FortifySkills.dll" into "<GameLocation>\BepInEx\plugins"
 
 ## Mechanics
@@ -73,12 +73,12 @@ Github: https://github.com/searica/FortifySkillsRedux
 My mods will always be free to use but if you feel like saying thanks you can tip/donate here through ko-fi: https://ko-fi.com/searica
 
 ### Contributions
-If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on the [Jötunn discord](https://discord.gg/DdUt6g7gyA) or the [Odin Plus discord](https://discord.gg/mbkPcvu9ax).
+If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on the [Jï¿½tunn discord](https://discord.gg/DdUt6g7gyA) or the [Odin Plus discord](https://discord.gg/mbkPcvu9ax).
 
 I'm a grad student and have a lot of personal responsibilities on top of that so I can't promise I will respond quickly, but I do intend to maintain and improve the mod in my free time.
 
 ### Credits
-This mod is based on the original one made by Merlyn42 and the patched version was made by Remeil. This mod is a complete rewrite of the original though as the original stopped working several game updates back and has no license. My thanks to Merlyn42 for the original idea though! Also, many thanks to the developers of Jötunn for all their work making the library.
+This mod is based on the original one made by Merlyn42 and the patched version was made by Remeil. This mod is a complete rewrite of the original though as the original stopped working several game updates back and has no license. My thanks to Merlyn42 for the original idea though! Also, many thanks to the developers of Jï¿½tunn for all their work making the library.
 
 ### Shameless Self Plug (Other Mods By Me)
 If you like this mod you might like some of my other ones.

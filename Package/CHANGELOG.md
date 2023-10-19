@@ -5,7 +5,7 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
-			<td align="center">1.0.1</td>
+			<td align="center">1.0.1/1.0.2</td>
 			<td align="left">
 				<ul>
 					<li>Update for patch 0.217.25</li>
@@ -16,9 +16,9 @@
 							<li>Removed LockingConfiguration setting.</li>
 						</ul>
 					</li>
-		
 					<li>Added a config file watcher to sync changes made on disk.</li>
 					<li>Added config setting to control how much information output to the log. Should be useful for user's reporting issues.</li>
+					<li>Update CHANGELOG format.</li>
 				</ul>
 			</td>
 		</tr>
