@@ -8,7 +8,7 @@ namespace FortifySkillsRedux
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
     [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
-    public class Plugin : BaseUnityPlugin
+    public class FortifySkillsRedux : BaseUnityPlugin
     {
         public const string PluginName = "FortifySkillsRedux";
         internal const string Author = "Searica";

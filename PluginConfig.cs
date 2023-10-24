@@ -8,7 +8,7 @@ namespace FortifySkillsRedux
 {
     internal class PluginConfig
     {
-        private static readonly string ConfigFileName = Plugin.PluginGuid + ".cfg";
+        private static readonly string ConfigFileName = FortifySkillsRedux.PluginGuid + ".cfg";
 
         private static readonly string ConfigFileFullPath = string.Concat(
             Paths.ConfigPath,
