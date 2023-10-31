@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace FortifySkillsRedux
+namespace FortifySkillsRedux.Configs
 {
-    internal class PluginConfig
+    internal class Config
     {
         private static readonly string ConfigFileName = FortifySkillsRedux.PluginGuid + ".cfg";
 

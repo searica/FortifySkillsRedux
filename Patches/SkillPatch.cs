@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FortifySkillsRedux.Configs;
+using HarmonyLib;
 using UnityEngine;
 
 namespace FortifySkillsRedux.Patches
@@ -10,25 +11,25 @@ namespace FortifySkillsRedux.Patches
         [HarmonyPatch(nameof(Skills.Skill.Raise))]
         private static void SkillRaisePrefix(Skills.Skill __instance, ref float factor)
         {
-            if (PluginConfig.IsVerbosityMedium)
+            if (Config.IsVerbosityMedium)
             {
                 Log.LogInfo("Skill.Raise.Prefix()");
             }
             // modify XP gain rate
-            if (PluginConfig.EnableIndividualSettings.Value)
+            if (Config.EnableIndividualSettings.Value)
             {
-                if (PluginConfig.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
+                if (Config.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
                 {
-                    factor *= PluginConfig.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
+                    factor *= Config.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
                 }
                 else
                 {
-                    factor *= PluginConfig.ModdedSkillXPMult.Value;
+                    factor *= Config.ModdedSkillXPMult.Value;
                 }
             }
             else
             {
-                factor *= PluginConfig.XPMult.Value;
+                factor *= Config.XPMult.Value;
             }
 
             // calculate XP for fortified skill level based on the modified skill XP
@@ -48,11 +49,11 @@ namespace FortifySkillsRedux.Patches
             if (fortSkill.FortifyLevel < 100f)
             {
                 fortSkill.FortifyAccumulator += xp * Mathf.Clamp(
-                        (__instance.m_level - fortSkill.FortifyLevel) * PluginConfig.FortifyLevelRate.Value,
+                        (__instance.m_level - fortSkill.FortifyLevel) * Config.FortifyLevelRate.Value,
                         0.0f,
-                        PluginConfig.FortifyXPRateMax.Value
+                        Config.FortifyXPRateMax.Value
                     );
-                if (PluginConfig.IsVerbosityMedium)
+                if (Config.IsVerbosityMedium)
                 {
                     Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator);
                 }
@@ -62,7 +63,7 @@ namespace FortifySkillsRedux.Patches
                     fortSkill.FortifyLevel = Mathf.Clamp(fortSkill.FortifyLevel + 1f, 0f, 100f);
                     fortSkill.FortifyAccumulator = 0f;
 
-                    if (PluginConfig.IsVerbosityMedium)
+                    if (Config.IsVerbosityMedium)
                     {
                         Debug.Log("Fortify level:" + fortSkill.FortifyLevel);
                     }

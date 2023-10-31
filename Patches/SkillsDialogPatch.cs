@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FortifySkillsRedux.Configs;
+using HarmonyLib;
 using System.Collections.Generic;
 using TMPro;
 
@@ -11,7 +12,7 @@ namespace FortifySkillsRedux
         [HarmonyPatch(nameof(SkillsDialog.Setup))]
         private static void SkillsDialogSetupPostfix(SkillsDialog __instance, Player player)
         {
-            if (PluginConfig.IsVerbosityMedium)
+            if (Config.IsVerbosityMedium)
             {
                 Log.LogInfo("SkillsDialog.Setup.Postfix()");
             }
@@ -34,7 +35,7 @@ namespace FortifySkillsRedux
                         }
                         else
                         {
-                            if (PluginConfig.IsVerbosityMedium)
+                            if (Config.IsVerbosityMedium)
                             {
                                 Log.LogInfo($"No Fortified skill for: {skill.m_info.m_skill}");
                             }
