@@ -5,6 +5,13 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.0.3</td>
+			<td align="left">
+				<li>Maintenance update.</li>
+				<li>Improved shutdown performance.</li>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.1/1.0.2</td>
 			<td align="left">
 				<ul>
