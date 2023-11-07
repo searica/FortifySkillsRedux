@@ -50,6 +50,9 @@ namespace FortifySkillsRedux.Patches
                 }
                 if (fortSkill.FortifyAccumulator >= GetLevelUpXpRequirement(fortSkill.FortifyLevel))
                 {
+                    // Set level up message type
+                    var type = (int)fortSkill.FortifyLevel == 0 ? MessageHud.MessageType.Center : MessageHud.MessageType.TopLeft;
+
                     // Level up Fortify skill
                     fortSkill.FortifyLevel = Mathf.Clamp(fortSkill.FortifyLevel + 1f, 0f, 100f);
                     fortSkill.FortifyAccumulator = 0f;
@@ -67,8 +70,6 @@ namespace FortifySkillsRedux.Patches
                     Object.Instantiate(sfx_prefab, player.GetHeadPoint(), Quaternion.identity);
 
                     // Display level up message
-                    MessageHud.MessageType type = (int)fortSkill.FortifyLevel == 0 ? MessageHud.MessageType.Center : MessageHud.MessageType.TopLeft;
-
                     player.Message(
                         type,
                         $"Fortified skill improved $skill_{fortSkill.SkillInfo.m_skill.ToString().ToLower()}: {(int)fortSkill.FortifyLevel}",
