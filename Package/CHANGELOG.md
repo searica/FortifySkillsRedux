@@ -7,8 +7,10 @@
 		<tr>
 			<td align="center">1.0.3</td>
 			<td align="left">
-				<li>Maintenance update.</li>
-				<li>Improved shutdown performance.</li>
+				<ul>
+					<li>Maintenance update.</li>
+					<li>Improved shutdown performance.</li>
+				</ul>
 			</td>
 		</tr>
 		<tr>

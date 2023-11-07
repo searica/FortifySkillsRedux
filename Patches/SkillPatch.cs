@@ -8,6 +8,7 @@ namespace FortifySkillsRedux.Patches
     public static class SkillPatch
     {
         [HarmonyPrefix]
+        [HarmonyPriority(Priority.VeryLow)]
         [HarmonyPatch(nameof(Skills.Skill.Raise))]
         private static void SkillRaisePrefix(Skills.Skill __instance, ref float factor)
         {
@@ -15,6 +16,7 @@ namespace FortifySkillsRedux.Patches
             {
                 Log.LogInfo("Skill.Raise.Prefix()");
             }
+
             // modify XP gain rate
             if (Config.EnableIndividualSettings.Value)
             {
@@ -32,8 +34,8 @@ namespace FortifySkillsRedux.Patches
                 factor *= Config.XPMult.Value;
             }
 
-            // calculate XP for fortified skill level based on the modified skill XP
-            float xp = __instance.m_info.m_increseStep * factor;
+            // calculate XP gained for the skill (used for getting fortified skill level XP)
+            float xpGained = __instance.m_info.m_increseStep * factor;
 
             FortifySkillData fortSkill;
             if (FortifySkillData.s_FortifySkillValues.ContainsKey(__instance.m_info.m_skill))
@@ -48,7 +50,7 @@ namespace FortifySkillsRedux.Patches
 
             if (fortSkill.FortifyLevel < 100f)
             {
-                fortSkill.FortifyAccumulator += xp * Mathf.Clamp(
+                fortSkill.FortifyAccumulator += xpGained * Mathf.Clamp(
                         (__instance.m_level - fortSkill.FortifyLevel) * Config.FortifyLevelRate.Value,
                         0.0f,
                         Config.FortifyXPRateMax.Value
@@ -72,8 +74,8 @@ namespace FortifySkillsRedux.Patches
                     GameObject vfx_prefab = ZNetScene.instance.GetPrefab("vfx_ColdBall_launch");
                     GameObject sfx_prefab = player.m_skillLevelupEffects.m_effectPrefabs[1].m_prefab;
 
-                    UnityEngine.Object.Instantiate(vfx_prefab, player.GetHeadPoint(), Quaternion.Euler(-90f, 0, 0));
-                    UnityEngine.Object.Instantiate(sfx_prefab, player.GetHeadPoint(), Quaternion.identity);
+                    Object.Instantiate(vfx_prefab, player.GetHeadPoint(), Quaternion.Euler(-90f, 0, 0));
+                    Object.Instantiate(sfx_prefab, player.GetHeadPoint(), Quaternion.identity);
 
                     // Display level up message
                     MessageHud.MessageType type = (int)fortSkill.FortifyLevel == 0 ? MessageHud.MessageType.Center : MessageHud.MessageType.TopLeft;
