@@ -7,35 +7,24 @@ namespace FortifySkillsRedux.Patches
     [HarmonyPatch(typeof(Skills.Skill))]
     public static class SkillPatch
     {
+        /// <summary>
+        ///     Patch to raise XP for fortified skill before
+        ///     XP multipliers are applied by this mod or other mods.
+        /// </summary>
+        /// <param name="__instance"></param>
+        /// <param name="factor"></param>
         [HarmonyPrefix]
-        [HarmonyPriority(Priority.VeryLow)]
+        [HarmonyPriority(Priority.VeryHigh)]
         [HarmonyPatch(nameof(Skills.Skill.Raise))]
-        private static void SkillRaisePrefix(Skills.Skill __instance, ref float factor)
+        private static void RaiseFortifySkill(Skills.Skill __instance, ref float factor)
         {
             if (Config.IsVerbosityMedium)
             {
-                Log.LogInfo("Skill.Raise.Prefix()");
-            }
-
-            // modify XP gain rate
-            if (Config.EnableIndividualSettings.Value)
-            {
-                if (Config.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
-                {
-                    factor *= Config.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
-                }
-                else
-                {
-                    factor *= Config.ModdedSkillXPMult.Value;
-                }
-            }
-            else
-            {
-                factor *= Config.XPMult.Value;
+                Log.LogInfo("Raising XP for Fortified skill");
             }
 
             // calculate XP gained for the skill (used for getting fortified skill level XP)
-            float xpGained = __instance.m_info.m_increseStep * factor;
+            float baseXP = __instance.m_info.m_increseStep * factor;
 
             FortifySkillData fortSkill;
             if (FortifySkillData.s_FortifySkillValues.ContainsKey(__instance.m_info.m_skill))
@@ -50,7 +39,7 @@ namespace FortifySkillsRedux.Patches
 
             if (fortSkill.FortifyLevel < 100f)
             {
-                fortSkill.FortifyAccumulator += xpGained * Mathf.Clamp(
+                fortSkill.FortifyAccumulator += baseXP * Mathf.Clamp(
                         (__instance.m_level - fortSkill.FortifyLevel) * Config.FortifyLevelRate.Value,
                         0.0f,
                         Config.FortifyXPRateMax.Value
@@ -93,6 +82,39 @@ namespace FortifySkillsRedux.Patches
         private static float GetLevelUpXpRequirement(float level)
         {
             return Mathf.Pow(level + 1f, 1.5f) * 0.5f + 0.5f;
+        }
+
+        /// <summary>
+        ///     Patch to apply XP multiplier from this mod.
+        /// </summary>
+        /// <param name="__instance"></param>
+        /// <param name="factor"></param>
+        [HarmonyPrefix]
+        [HarmonyPriority(Priority.VeryLow)]
+        [HarmonyPatch(nameof(Skills.Skill.Raise))]
+        private static void ActiveSkillXpMultiplier(Skills.Skill __instance, ref float factor)
+        {
+            if (Config.IsVerbosityMedium)
+            {
+                Log.LogInfo("Applying active skill XP multiplier");
+            }
+
+            // modify XP gain rate
+            if (Config.EnableIndividualSettings.Value)
+            {
+                if (Config.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
+                {
+                    factor *= Config.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
+                }
+                else
+                {
+                    factor *= Config.ModdedSkillXPMult.Value;
+                }
+            }
+            else
+            {
+                factor *= Config.XPMult.Value;
+            }
         }
     }
 }
