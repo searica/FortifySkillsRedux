@@ -21,7 +21,7 @@ There are two major gameplay advantages to this:
 
 Your Fortify skill level will be displayed in parenthesis in your skill list next to your active skill level.
 
-## Config Settings
+## Configuration Settings
 
 ### Global Section
 **XPMult [Synced with Server]**
@@ -29,7 +29,7 @@ Your Fortify skill level will be displayed in parenthesis in your skill list nex
 - Default value: 1.5
 
 **FortifyXPPerLevelRate [Synced with Server]**
-- "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill after the XPMult value has been applied.
+- "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill before any XP multipliers have been applied.
 - Default value: 0.1
 
 **FortifyXPRateMax [Synced with Server]**

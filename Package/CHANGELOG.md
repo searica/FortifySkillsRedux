@@ -5,6 +5,16 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.0.4</td>
+			<td align="left">
+				<ul>
+					<li>Update for current game patch.</li>
+					<li>Decoupled Fortify Skill level XP rate and Active Skill level XP multiplier.</li>
+					<li>Console commands that reset skills now also reset fortified skills.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.3</td>
 			<td align="left">
 				<ul>

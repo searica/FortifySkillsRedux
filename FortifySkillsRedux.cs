@@ -14,7 +14,7 @@ namespace FortifySkillsRedux
         public const string PluginName = "FortifySkillsRedux";
         internal const string Author = "Searica";
         public const string PluginGuid = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "1.0.3";
+        public const string PluginVersion = "1.0.4";
 
         public void Awake()
         {

@@ -21,7 +21,7 @@ There are two major gameplay advantages to this:
 
 Your Fortify skill level will be displayed in parenthesis in your skill list next to your active skill level.
 
-## Config Settings
+## Configuration Settings
 
 ### Global Section
 **XPMult [Synced with Server]**
@@ -29,7 +29,7 @@ Your Fortify skill level will be displayed in parenthesis in your skill list nex
 - Default value: 1.5
 
 **FortifyXPPerLevelRate [Synced with Server]**
-- "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill after the XPMult value has been applied.
+- "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill before any XP multipliers have been applied.
 - Default value: 0.1
 
 **FortifyXPRateMax [Synced with Server]**
@@ -66,14 +66,19 @@ There is one entry in this section for each skill in the Vanilla game.
 - Your Fortify skill level will be set to 95% of your current skill level when you first install it so dying immediately will have the same effect as the base game.
 - If you remove this mod your character will be fine, the fortify skill level will disappear and the current skill level will stay the same (including levels gained due to the faster levelling from this mod).
 
+
+## Donations/Tips
+My mods will always be free to use but if you feel like saying thanks you can tip/donate here: 
+  [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/searica)
+
 ## Source Code
 Github: https://github.com/searica/FortifySkillsRedux
 
-## Donations/Tips
-My mods will always be free to use but if you feel like saying thanks you can tip/donate here through ko-fi: https://ko-fi.com/searica
 
 ### Contributions
-If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on the [J�tunn discord](https://discord.gg/DdUt6g7gyA) or the [Odin Plus discord](https://discord.gg/mbkPcvu9ax).
+If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on my discord [Searica's Mods](https://discord.gg/sFmGTBYN6n).
+<!--the [Jotunn discord](https://discord.gg/DdUt6g7gyA), or the [Odin Plus discord](https://discord.gg/mbkPcvu9ax)-->
+
 
 I'm a grad student and have a lot of personal responsibilities on top of that so I can't promise I will respond quickly, but I do intend to maintain and improve the mod in my free time.
 
@@ -91,3 +96,4 @@ If you like this mod you might like some of my other ones.
 #### Gameplay Mods
 <!--- [FortifySkillsRedux](https://valheim.thunderstore.io/package/Searica/FortifySkillsRedux/)-->
 - [DodgeShortcut](https://valheim.thunderstore.io/package/Searica/DodgeShortcut/)
+- [ProjectileTweaks](https://github.com/searica/ProjectileTweaks)
