@@ -1,6 +1,7 @@
 using FortifySkillsRedux.Configs;
 using HarmonyLib;
 using System.Collections.Generic;
+using static Skills;
 
 namespace FortifySkillsRedux
 {
@@ -26,14 +27,14 @@ namespace FortifySkillsRedux
 
             for (int i = 0; i < num2; i++)
             {
-                Skills.SkillType skillType = (Skills.SkillType)pkg.ReadInt();
+                SkillType skillType = (SkillType)pkg.ReadInt();
                 float level = pkg.ReadSingle();
                 float accumulator = num >= 2 ? pkg.ReadSingle() : 0f;
 
                 // Is an existing skill in the base game (or a skill added by a mod)
                 if (Skills.IsSkillValid(skillType))
                 {
-                    Skills.Skill skill = __instance.GetSkill(skillType);
+                    Skill skill = __instance.GetSkill(skillType);
 
                     // Init a Fortify skill and set it to 95% of current skill if one does not already exist.
                     // Data will be overridden by stored values from character save data if said data was saved.
@@ -45,21 +46,21 @@ namespace FortifySkillsRedux
                 else // Should be dummy skill added by this mod to store FortifySkill data on save.
                 {
                     // Compute the skill that the FortifySkill maps to.
-                    Skills.SkillType activeSkillType = (Skills.SkillType)(int.MaxValue - (int)skillType);
-                    if (Skills.IsSkillValid(activeSkillType))
+                    SkillType activeSkillType = (SkillType)(int.MaxValue - (int)skillType);
+                    if (IsSkillValid(activeSkillType))
                     {
                         if (Config.IsVerbosityMedium)
                         {
                             Log.LogInfo($"Fortify Skill mapped to: {activeSkillType} @: {level}");
                         }
-                        Skills.Skill skill = __instance.GetSkill(activeSkillType);
+                        Skill skill = __instance.GetSkill(activeSkillType);
                         FortifySkillData.s_FortifySkillValues[activeSkillType] = new FortifySkillData(skill.m_info, level, accumulator);
                     }
                     else
                     {
                         if (Config.IsVerbosityMedium)
                         {
-                            Log.LogInfo("Unrecognised Fortify skill!");
+                            Log.LogInfo("Unrecognized Fortify skill!");
                         }
                     }
                 }
@@ -71,7 +72,7 @@ namespace FortifySkillsRedux
         [HarmonyPatch(nameof(Skills.Save))]
         private static void SavePrefix(
             Skills __instance,
-            out Dictionary<Skills.SkillType, Skills.Skill> __state
+            out Dictionary<SkillType, Skill> __state
         )
         {
             if (Config.IsVerbosityMedium)
@@ -80,10 +81,10 @@ namespace FortifySkillsRedux
             }
             if (FortifySkillData.s_AssociatedPlayer == __instance.m_player)
             {
-                __state = new Dictionary<Skills.SkillType, Skills.Skill>();
+                __state = new Dictionary<SkillType, Skill>();
 
                 // Create a copy of m_skill_data as it currently is.
-                foreach (KeyValuePair<Skills.SkillType, Skills.Skill> pair in __instance.m_skillData)
+                foreach (KeyValuePair<SkillType, Skill> pair in __instance.m_skillData)
                 {
                     if (Config.IsVerbosityMedium)
                     {
@@ -93,7 +94,7 @@ namespace FortifySkillsRedux
                 }
 
                 // Add dummy skills before saving to allow storing fortified skill data.
-                foreach (KeyValuePair<Skills.SkillType, FortifySkillData> pair in FortifySkillData.s_FortifySkillValues)
+                foreach (KeyValuePair<SkillType, FortifySkillData> pair in FortifySkillData.s_FortifySkillValues)
                 {
                     if (Config.IsVerbosityMedium)
                     {
@@ -104,12 +105,12 @@ namespace FortifySkillsRedux
                         continue;
                     }
 
-                    Skills.SkillDef dummySkillInfo = new()
+                    SkillDef dummySkillInfo = new()
                     {
-                        m_skill = (Skills.SkillType)(int.MaxValue - (int)pair.Value.SkillInfo.m_skill)
+                        m_skill = (SkillType)(int.MaxValue - (int)pair.Value.SkillInfo.m_skill)
                     };
 
-                    Skills.Skill dummySkill = new(dummySkillInfo)
+                    Skill dummySkill = new(dummySkillInfo)
                     {
                         m_accumulator = pair.Value.FortifyAccumulator,
                         m_level = pair.Value.FortifyLevel
@@ -132,7 +133,7 @@ namespace FortifySkillsRedux
         [HarmonyPatch(nameof(Skills.Save))]
         private static void SavePostfix(
             Skills __instance,
-            Dictionary<Skills.SkillType, Skills.Skill> __state
+            Dictionary<SkillType, Skill> __state
         )
         {
             if (Config.IsVerbosityMedium)
@@ -154,7 +155,7 @@ namespace FortifySkillsRedux
             // Reset m_skillData to remove dummy skills.
             // Copy back the original values that were stored in __state.
             __instance.m_skillData.Clear();
-            foreach (KeyValuePair<Skills.SkillType, Skills.Skill> pair in __state)
+            foreach (KeyValuePair<SkillType, Skill> pair in __state)
             {
                 if (Config.IsVerbosityMedium)
                 {
@@ -172,7 +173,7 @@ namespace FortifySkillsRedux
             {
                 Log.LogInfo("Skills.OnDeath.Postfix()");
             }
-            foreach (KeyValuePair<Skills.SkillType, Skills.Skill> pair in __instance.m_skillData)
+            foreach (KeyValuePair<SkillType, Skill> pair in __instance.m_skillData)
             {
                 if (FortifySkillData.s_FortifySkillValues.ContainsKey(pair.Key))
                 {
@@ -185,6 +186,18 @@ namespace FortifySkillsRedux
                     pair.Value.m_accumulator = 0f;
                 }
             }
+        }
+
+        /// <summary>
+        ///     Patch to reset fortified skill levels when resetskill console command is used to reset skills.
+        /// </summary>
+        /// <param name="__instance"></param>
+        /// <param name="skillType"></param>
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(Skills.ResetSkill))]
+        private static void SkillResetSkill(SkillType skillType)
+        {
+            FortifySkillData.ResetFortifySkill(skillType);
         }
     }
 }
