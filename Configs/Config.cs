@@ -98,7 +98,7 @@ namespace FortifySkillsRedux.Configs
                 MainSection,
                 "XPMult",
                 1.5f,
-                "Used to control the rate at which the active level increases, 1=base game, 1.5=50% bonus xp awarded, 0.8=20% less xp awarded. Default:1.5",
+                "Used to control the rate at which the active level increases, 1=base game, 1.5=50% bonus xp awarded, 0.8=20% less xp awarded.",
                 new AcceptableValueRange<float>(0.0f, 10f)
             );
 
@@ -106,7 +106,7 @@ namespace FortifySkillsRedux.Configs
                 MainSection,
                 "FortifyXPPerLevelRate",
                 0.1f,
-                "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill after the XPMult value has been applied. Default:0.1",
+                "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill before any XP multipliers have been applied.",
                 new AcceptableValueRange<float>(0.0f, 1f)
             );
 
@@ -114,7 +114,7 @@ namespace FortifySkillsRedux.Configs
                 MainSection,
                 "FortifyXPRateMax",
                 0.8f,
-                "Used to control the maximum rate of XP earned for the fortified skill. Caps FortifyXPPerLevelRate. Values less than 1 mean the fortify skill will always increase more slowly than the active level. 0.8=Will gain a max of 80% of the XP gained for the active skill. Default 0.8",
+                "Used to control the maximum rate of XP earned for the fortified skill. Caps FortifyXPPerLevelRate. Values less than 1 mean the fortify skill will always increase more slowly than the active level. 0.8=Will gain a max of 80% of the XP gained for the active skill.",
                 new AcceptableValueRange<float>(0.0f, 2.0f)
             );
 
@@ -166,7 +166,7 @@ namespace FortifySkillsRedux.Configs
                 SkillsSection,
                 "ModdedSkillXPMult",
                 1.0f,
-                "XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multipier settings). Only used if EnableIndividualSettings is set to true.",
+                "XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multiplier settings). Only used if EnableIndividualSettings is set to true.",
                 new AcceptableValueRange<float>(0.0f, 10f)
             );
             Save();
