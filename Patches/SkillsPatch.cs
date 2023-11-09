@@ -165,13 +165,14 @@ namespace FortifySkillsRedux
             }
         }
 
-        [HarmonyPostfix]
+        [HarmonyFinalizer]
+        [HarmonyPriority(Priority.VeryLow)]
         [HarmonyPatch(nameof(Skills.OnDeath))]
-        private static void SkillsOnDeathPostfix(Skills __instance)
+        private static void SkillsOnDeathFinalizer(Skills __instance)
         {
             if (Config.IsVerbosityMedium)
             {
-                Log.LogInfo("Skills.OnDeath.Postfix()");
+                Log.LogInfo("Finalizing skills on death");
             }
             foreach (KeyValuePair<SkillType, Skill> pair in __instance.m_skillData)
             {
@@ -180,13 +181,36 @@ namespace FortifySkillsRedux
                     FortifySkillData fortify = FortifySkillData.s_FortifySkillValues[pair.Key];
                     if (Config.IsVerbosityMedium)
                     {
-                        Log.LogInfo($"Setting {pair.Key} to fortify level: {fortify.FortifyLevel}");
+                        Log.LogInfo($"Setting {pair.Key.ToString()} to fortify level: {fortify.FortifyLevel}");
                     }
                     pair.Value.m_level = fortify.FortifyLevel;
                     pair.Value.m_accumulator = 0f;
                 }
             }
         }
+
+        //[HarmonyPostfix]
+        //[HarmonyPatch(nameof(Skills.OnDeath))]
+        //private static void SkillsOnDeathPostfix(Skills __instance)
+        //{
+        //    if (Config.IsVerbosityMedium)
+        //    {
+        //        Log.LogInfo("Skills.OnDeath.Postfix()");
+        //    }
+        //    foreach (KeyValuePair<SkillType, Skill> pair in __instance.m_skillData)
+        //    {
+        //        if (FortifySkillData.s_FortifySkillValues.ContainsKey(pair.Key))
+        //        {
+        //            FortifySkillData fortify = FortifySkillData.s_FortifySkillValues[pair.Key];
+        //            if (Config.IsVerbosityMedium)
+        //            {
+        //                Log.LogInfo($"Setting {pair.Key} to fortify level: {fortify.FortifyLevel}");
+        //            }
+        //            pair.Value.m_level = fortify.FortifyLevel;
+        //            pair.Value.m_accumulator = 0f;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         ///     Patch to reset fortified skill levels when resetskill console command is used to reset skills.
