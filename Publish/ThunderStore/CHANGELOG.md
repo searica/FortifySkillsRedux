@@ -5,6 +5,17 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.0.5</td>
+			<td align="left">
+				<ul>
+					<li>Fixed issue with skills added by other mods using SkillManager not reseting to their fortified skill level on death.</li>
+					<li>Rearranged and cleaned up configuration file. (<b>You need to regenerate your config file!)</b></li>
+					<li>Improved logging for debug purposes.</li>
+					<li>Updated icon.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.4</td>
 			<td align="left">
 				<ul>

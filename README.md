@@ -24,32 +24,39 @@ Your Fortify skill level will be displayed in parenthesis in your skill list nex
 ## Configuration Settings
 
 ### Global Section
-**XPMult [Synced with Server]**
-- Used to control the rate at which the active level increases, 1=base game, 1.5=50% bonus xp awarded, 0.8=20% less xp awarded.
-- Default value: 1.5
-
-**FortifyXPPerLevelRate [Synced with Server]**
-- "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill before any XP multipliers have been applied.
-- Default value: 0.1
-
-**FortifyXPRateMax [Synced with Server]**
-- Used to control the maximum rate of XP earned for the fortified skill. Caps FortifyXPPerLevelRate. Values less than 1 mean the fortify skill will always increase more slowly than the active level. 0.8=Will gain a max of 80% of the XP gained for the active skill.
-- Default value: 0.8
+**Verbosity**
+- Low will log basic information about the mod. Medium will log information that is useful for troubleshooting. High will log a lot of information, do not set it to this without good reason as it will slow down your game.
+    - Acceptable values: Low, Medium, High
+    - Default value: Low.
 
 **EnableIndividualSettings [Synced with Server]**
 - Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the XPMult values from the IndividualSKills section are used for each vanilla skill (skills added by mods are always modified based on the XPMult value from the Mechanics section).
-- Default value: false.
+    - Acceptable values: False, True
+    - Default value: false.
+
+### Mechanics
+**XPMult [Synced with Server]**
+- Used to control the rate at which the active level increases, 1=base game, 1.5=50% bonus xp awarded, 0.8=20% less xp awarded.
+    - Default value: 1.5
+
+**FortifyXPPerLevelRate [Synced with Server]**
+- "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill before any XP multipliers have been applied.
+    - Default value: 0.1
+
+**FortifyXPRateMax [Synced with Server]**
+- Used to control the maximum rate of XP earned for the fortified skill. Caps FortifyXPPerLevelRate. Values less than 1 mean the fortify skill will always increase more slowly than the active level. 0.8=Will gain a max of 80% of the XP gained for the active skill.
+    - Default value: 0.8
 
 ### IndividualSkills Section
 There is one entry in this section for each skill in the Vanilla game.
 
-**SkillName [Synced with Server]**
+**SkillName_XPMult [Synced with Server]**
 - XP Multiplier for {skillName} skill. Only used if EnableIndividualSettings is set to true.
-- Default value: 1.5
+    - Default value: 1.5
 
-**ModdedSkillXPMult [Synced with Server]**
+**ModdedSkill_XPMult [Synced with Server]**
 - XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multipier settings). Only used if EnableIndividualSettings is set to true.
-- Default value: 1.0
+    - Default value: 1.0
 
 
 ## Compatibility
@@ -62,9 +69,9 @@ There is one entry in this section for each skill in the Vanilla game.
 
 ## Notes
 - You don't have to install this mod on the server you play on, it works as a purely client-side mod. Installing the mod on the server is only necessary if you want to enforce the same configuration for all players.
-- I recommend backing up your character file from "%appdata%\..\LocalLow\IronGate\Valheim\characters" as this mod changes how those files are written.
+- If you want to be extra cautious you can back up your character file from "%appdata%\..\LocalLow\IronGate\Valheim\characters" as this mod changes how those files are written.
 - Your Fortify skill level will be set to 95% of your current skill level when you first install it so dying immediately will have the same effect as the base game.
-- If you remove this mod your character will be fine, the fortify skill level will disappear and the current skill level will stay the same (including levels gained due to the faster levelling from this mod).
+- If you remove this mod your character will be fine, the fortify skill level will disappear and the current skill level will stay the same (including levels gained due to the faster leveling from this mod).
 
 
 ## Donations/Tips
@@ -91,9 +98,10 @@ If you like this mod you might like some of my other ones.
 #### Building Mods
 - [MoreVanillaBuildPrefabs](https://valheim.thunderstore.io/package/Searica/More_Vanilla_Build_Prefabs/)
 - [Extra Snap Points Made Easy](https://valheim.thunderstore.io/package/Searica/Extra_Snap_Points_Made_Easy/)
+- [BuildRestrictionTweaksSync](https://valheim.thunderstore.io/package/Searica/BuildRestrictionTweaksSync/)
 
 
 #### Gameplay Mods
-<!--- [FortifySkillsRedux](https://valheim.thunderstore.io/package/Searica/FortifySkillsRedux/)-->
 - [DodgeShortcut](https://valheim.thunderstore.io/package/Searica/DodgeShortcut/)
 - [ProjectileTweaks](https://github.com/searica/ProjectileTweaks)
+- [SkilledCarryWeight](https://valheim.thunderstore.io/package/Searica/SkilledCarryWeight/)

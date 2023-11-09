@@ -145,7 +145,8 @@ namespace FortifySkillsRedux.Configs
                 MainSection,
                 "Verbosity",
                 LoggerLevel.Low,
-                "Low will log basic information about the mod. Medium will log information that is useful for troubleshooting. High will log a lot of information, do not set it to this without good reason as it will slow down your game."
+                "Low will log basic information about the mod. Medium will log information that is useful for troubleshooting. High will log a lot of information, do not set it to this without good reason as it will slow down your game.",
+                synced: false
             );
 
             EnableIndividualSettings = BindConfig(
@@ -185,11 +186,11 @@ namespace FortifySkillsRedux.Configs
                 Log.LogInfo($"{Skills.s_allSkills.Count()} SkillTypes are defined in base game.");
             }
 
-            foreach (var skilltype in Skills.s_allSkills)
+            foreach (var skillType in Skills.s_allSkills)
             {
-                string skillName = skilltype.ToString();
+                string skillName = skillType.ToString();
 
-                if (skillName != null && skillName != "None" && skillName != "All")
+                if (skillName != null && skillType != Skills.SkillType.None && skillType != Skills.SkillType.All)
                 {
                     if (IsVerbosityMedium)
                     {
@@ -201,7 +202,7 @@ namespace FortifySkillsRedux.Configs
                         SkillsSection,
                         SetStringPriority($"{skillName}_XPMult", 1),
                         1.5f,
-                        $"XP Multiplier for {skillName} skill. Only used if EnableIndividualSettings is set to true",
+                        $"XP Multiplier for {skillName} skill. Only used if IndividualSettings is set to true",
                         new AcceptableValueRange<float>(0.0f, 10.0f)
                     )
                 );
@@ -212,7 +213,7 @@ namespace FortifySkillsRedux.Configs
                 SkillsSection,
                 "ModdedSkill_XPMult",
                 1.0f,
-                "XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multiplier settings). Only used if EnableIndividualSettings is set to true.",
+                "XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multiplier settings). Only used if IndividualSettings is set to true.",
                 new AcceptableValueRange<float>(0.0f, 10f)
             );
             Save();

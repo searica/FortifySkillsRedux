@@ -18,7 +18,7 @@ namespace FortifySkillsRedux.Patches
         [HarmonyPatch(nameof(Skills.Skill.Raise))]
         private static void RaiseFortifySkill(Skills.Skill __instance, ref float factor)
         {
-            if (Config.IsVerbosityMedium)
+            if (ConfigManager.IsVerbosityMedium)
             {
                 Log.LogInfo("Raising XP for Fortified skill");
             }
@@ -40,14 +40,11 @@ namespace FortifySkillsRedux.Patches
             if (fortSkill.FortifyLevel < 100f)
             {
                 fortSkill.FortifyAccumulator += baseXP * Mathf.Clamp(
-                        (__instance.m_level - fortSkill.FortifyLevel) * Config.FortifyLevelRate.Value,
+                        (__instance.m_level - fortSkill.FortifyLevel) * ConfigManager.FortifyLevelRate.Value,
                         0.0f,
-                        Config.FortifyXPRateMax.Value
+                        ConfigManager.FortifyXPRateMax.Value
                     );
-                if (Config.IsVerbosityMedium)
-                {
-                    Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator);
-                }
+                if (ConfigManager.IsVerbosityHigh) { Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator); }
                 if (fortSkill.FortifyAccumulator >= GetLevelUpXpRequirement(fortSkill.FortifyLevel))
                 {
                     // Set level up message type
@@ -57,7 +54,7 @@ namespace FortifySkillsRedux.Patches
                     fortSkill.FortifyLevel = Mathf.Clamp(fortSkill.FortifyLevel + 1f, 0f, 100f);
                     fortSkill.FortifyAccumulator = 0f;
 
-                    if (Config.IsVerbosityMedium)
+                    if (ConfigManager.IsVerbosityMedium)
                     {
                         Debug.Log("Fortify level:" + fortSkill.FortifyLevel);
                     }
@@ -72,9 +69,9 @@ namespace FortifySkillsRedux.Patches
                     // Display level up message
                     player.Message(
                         type,
-                        $"Fortified skill improved $skill_{fortSkill.SkillInfo.m_skill.ToString().ToLower()}: {(int)fortSkill.FortifyLevel}",
+                        $"Fortified skill improved {fortSkill.SkillName}: {(int)fortSkill.FortifyLevel}",
                         0,
-                        fortSkill.SkillInfo.m_icon
+                        fortSkill.Info.m_icon
                     );
                 }
             }
@@ -95,26 +92,26 @@ namespace FortifySkillsRedux.Patches
         [HarmonyPatch(nameof(Skills.Skill.Raise))]
         private static void ActiveSkillXpMultiplier(Skills.Skill __instance, ref float factor)
         {
-            if (Config.IsVerbosityMedium)
+            if (ConfigManager.IsVerbosityMedium)
             {
                 Log.LogInfo("Applying active skill XP multiplier");
             }
 
             // modify XP gain rate
-            if (Config.EnableIndividualSettings.Value)
+            if (ConfigManager.EnableIndividualSettings.Value)
             {
-                if (Config.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
+                if (ConfigManager.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
                 {
-                    factor *= Config.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
+                    factor *= ConfigManager.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
                 }
                 else
                 {
-                    factor *= Config.ModdedSkillXPMult.Value;
+                    factor *= ConfigManager.ModdedSkillXPMult.Value;
                 }
             }
             else
             {
-                factor *= Config.XPMult.Value;
+                factor *= ConfigManager.XPMult.Value;
             }
         }
     }

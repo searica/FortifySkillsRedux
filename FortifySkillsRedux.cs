@@ -3,32 +3,38 @@ using BepInEx.Logging;
 using HarmonyLib;
 using Jotunn.Utils;
 using System.Reflection;
+using FortifySkillsRedux.Configs;
 
 namespace FortifySkillsRedux
 {
-    [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+    [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
     [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
     public class FortifySkillsRedux : BaseUnityPlugin
     {
         public const string PluginName = "FortifySkillsRedux";
         internal const string Author = "Searica";
-        public const string PluginGuid = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "1.0.4";
+        public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
+        public const string PluginVersion = "1.0.5";
 
         public void Awake()
         {
             Log.Init(Logger);
-            Configs.Config.Init(Config);
-            Configs.Config.SetUpConfig();
-            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), harmonyInstanceId: PluginGuid);
 
-            Configs.Config.SetupWatcher();
+            ConfigManager.Init(Config);
+            ConfigManager.SetUpConfig();
+
+            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), harmonyInstanceId: PluginGUID);
+
+            Game.isModded = true;
+
+            ConfigManager.SetupWatcher();
+            ConfigManager.OnConfigWindowClosed += () => { ConfigManager.Save(); };
         }
 
         public void OnDestroy()
         {
-            Configs.Config.Save();
+            ConfigManager.Save();
         }
     }
 
