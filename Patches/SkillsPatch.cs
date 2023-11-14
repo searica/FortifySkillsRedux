@@ -12,10 +12,7 @@ namespace FortifySkillsRedux
         [HarmonyPatch(nameof(Skills.Load))]
         private static void LoadPrefix(Skills __instance, ZPackage pkg)
         {
-            if (ConfigManager.IsVerbosityMedium)
-            {
-                Log.LogInfo("Skills.Load.Prefix()");
-            }
+            Log.LogInfo("Skills.Load.Prefix()", LogLevel.Medium);
 
             int currentPos = pkg.GetPos();
 
@@ -40,7 +37,7 @@ namespace FortifySkillsRedux
                     // Data will be overridden by stored values from character save data if said data was saved.
                     if (skill?.m_info != null && !FortifySkillData.s_FortifySkillValues.ContainsKey(skillType))
                     {
-                        if (ConfigManager.IsVerbosityMedium)
+                        if (Log.VerbosityLevel >= LogLevel.Medium)
                         {
                             var skillName = FortifySkillData.GetLocalizedSkillName(skillType);
                             Log.LogInfo($"Fortify Skill initialized for: {skillName} a.k.a {skill.m_info?.m_description}");
@@ -57,7 +54,7 @@ namespace FortifySkillsRedux
                         Skill skill = __instance.GetSkill(activeSkillType);
                         if (skill?.m_info != null)
                         {
-                            if (ConfigManager.IsVerbosityMedium)
+                            if (Log.VerbosityLevel >= LogLevel.Medium)
                             {
                                 var skillName = FortifySkillData.GetLocalizedSkillName(activeSkillType);
                                 Log.LogInfo($"Fortify Skill mapped to: {skillName} a.k.a {skill.m_info?.m_description} @: {level}");
@@ -65,9 +62,9 @@ namespace FortifySkillsRedux
                             FortifySkillData.s_FortifySkillValues[activeSkillType] = new FortifySkillData(skill.m_info, level, accumulator);
                         }
                     }
-                    else if (ConfigManager.IsVerbosityMedium)
+                    else
                     {
-                        Log.LogInfo("Unrecognized Fortify skill!");
+                        Log.LogInfo("Unrecognized Fortify skill!", LogLevel.Medium);
                     }
                 }
             }
@@ -79,7 +76,7 @@ namespace FortifySkillsRedux
         [HarmonyPatch(nameof(Skills.Save))]
         private static void SavePrefix(Skills __instance, out Dictionary<SkillType, Skill> __state)
         {
-            if (ConfigManager.IsVerbosityMedium) { Log.LogInfo("Skills.Save.Prefix()"); }
+            Log.LogInfo("Skills.Save.Prefix()", LogLevel.Medium);
 
             if (FortifySkillData.s_AssociatedPlayer == __instance.m_player)
             {
@@ -90,7 +87,7 @@ namespace FortifySkillsRedux
                 {
                     if (pair.Value?.m_info == null) { continue; }
 
-                    if (ConfigManager.IsVerbosityHigh)
+                    if (Log.VerbosityLevel >= LogLevel.High)
                     {
                         var skillName = FortifySkillData.GetLocalizedSkillName(pair.Key);
                         Log.LogInfo($"Copying {skillName} a.k.a {pair.Value.m_info.m_description}");
@@ -102,7 +99,7 @@ namespace FortifySkillsRedux
                 foreach (KeyValuePair<SkillType, FortifySkillData> pair in FortifySkillData.s_FortifySkillValues)
                 {
                     if (pair.Value?.Info?.m_skill == null) { continue; }
-                    if (ConfigManager.IsVerbosityHigh)
+                    if (Log.VerbosityLevel >= LogLevel.High)
                     {
                         var skillName = FortifySkillData.GetLocalizedSkillName(pair.Key);
                         Log.LogInfo($"Making dummy skill for {skillName} a.k.a {pair.Value.Info.m_description}");
@@ -126,10 +123,7 @@ namespace FortifySkillsRedux
             else
             {
                 __state = null;
-                if (ConfigManager.IsVerbosityMedium)
-                {
-                    Log.LogInfo("New character: skip saving Fortified Skill data");
-                }
+                Log.LogInfo("New character: skip saving Fortified Skill data", LogLevel.Medium);
             }
         }
 
@@ -142,22 +136,18 @@ namespace FortifySkillsRedux
         {
             if (__state == null)
             {
-                if (ConfigManager.IsVerbosityMedium)
-                {
-                    Log.LogInfo("No fortified skill data, skip removing dummy skills.");
-                }
+                Log.LogInfo("No fortified skill data, skip removing dummy skills.", LogLevel.Medium);
                 return;
             }
-            if (ConfigManager.IsVerbosityMedium)
-            {
-                Log.LogInfo("Reseting m_skillData to remove dummy skills.");
-            }
+
+            Log.LogInfo("Reseting m_skillData to remove dummy skills.", LogLevel.Medium);
+
             // Reset m_skillData to remove dummy skills.
             // Copy back the original values that were stored in __state.
             __instance.m_skillData.Clear();
             foreach (KeyValuePair<SkillType, Skill> pair in __state)
             {
-                if (ConfigManager.IsVerbosityHigh)
+                if (Log.VerbosityLevel >= LogLevel.High)
                 {
                     var skillName = FortifySkillData.GetLocalizedSkillName(pair.Key);
                     Log.LogInfo($"Copying {skillName} a.k.a {pair.Value.m_info.m_description}");
@@ -171,20 +161,16 @@ namespace FortifySkillsRedux
         [HarmonyPatch(nameof(Skills.OnDeath))]
         private static void SkillsOnDeathFinalizer(Skills __instance)
         {
-            if (ConfigManager.IsVerbosityMedium)
-            {
-                Log.LogInfo("Finalizing skills on death");
-            }
+            Log.LogInfo("Finalizing skills on death", LogLevel.Medium);
+
             foreach (KeyValuePair<SkillType, Skill> pair in __instance.m_skillData)
             {
                 if (FortifySkillData.s_FortifySkillValues.ContainsKey(pair.Key))
                 {
                     FortifySkillData fortify = FortifySkillData.s_FortifySkillValues[pair.Key];
 
-                    if (ConfigManager.IsVerbosityMedium)
-                    {
-                        Log.LogInfo($"Setting {fortify.SkillName} to fortify level: {fortify.FortifyLevel}");
-                    }
+                    Log.LogInfo($"Setting {fortify.SkillName} to fortify level: {fortify.FortifyLevel}", LogLevel.Medium);
+
                     pair.Value.m_level = fortify.FortifyLevel;
                     pair.Value.m_accumulator = 0f;
                 }

@@ -14,13 +14,9 @@ namespace FortifySkillsRedux.Configs
 {
     internal class ConfigManager
     {
-        private static readonly string ConfigFileName = FortifySkillsRedux.PluginGUID + ".cfg";
+        private static string ConfigFileName;
 
-        private static readonly string ConfigFileFullPath = string.Concat(
-            Paths.ConfigPath,
-            Path.DirectorySeparatorChar,
-            ConfigFileName
-        );
+        private static string ConfigFileFullPath;
 
         private static ConfigFile configFile;
         private static BaseUnityPlugin ConfigurationManager;
@@ -55,23 +51,6 @@ namespace FortifySkillsRedux.Configs
         }
 
         #endregion Events
-
-        #region LoggerLevel
-
-        internal enum LoggerLevel
-        {
-            Low = 0,
-            Medium = 1,
-            High = 2,
-        }
-
-        internal static ConfigEntry<LoggerLevel> Verbosity { get; private set; }
-        internal static LoggerLevel VerbosityLevel => Verbosity.Value;
-        internal static bool IsVerbosityLow => Verbosity.Value >= LoggerLevel.Low;
-        internal static bool IsVerbosityMedium => Verbosity.Value >= LoggerLevel.Medium;
-        internal static bool IsVerbosityHigh => Verbosity.Value >= LoggerLevel.High;
-
-        #endregion LoggerLevel
 
         #region BindConfig
 
@@ -108,7 +87,7 @@ namespace FortifySkillsRedux.Configs
         /// <param name="sectionName">Section name</param>
         /// <param name="priority">Number of ZWS chars to prepend</param>
         /// <returns></returns>
-        private static string SetStringPriority(string sectionName, int priority)
+        internal static string SetStringPriority(string sectionName, int priority)
         {
             if (priority == 0) { return sectionName; }
             return new string(ZWS, priority) + sectionName;
@@ -121,102 +100,12 @@ namespace FortifySkillsRedux.Configs
 
         #endregion BindConfig
 
-        private static readonly string MainSection = SetStringPriority("Global", 2);
-        private static readonly string Mechanics = SetStringPriority("Mechanics", 1);
-        private static readonly string SkillsSection = SetStringPriority("IndividualSkills", 0);
-
-        internal static ConfigEntry<float> XPMult { get; private set; }
-        internal static ConfigEntry<float> FortifyLevelRate { get; private set; }
-        internal static ConfigEntry<float> FortifyXPRateMax { get; private set; }
-        internal static ConfigEntry<bool> EnableIndividualSettings { get; private set; }
-        internal static ConfigEntry<float> ModdedSkillXPMult { get; private set; }
-
-        internal static Dictionary<string, ConfigEntry<float>> SkillConfigEntries = new();
-
-        internal static void Init(ConfigFile config)
+        internal static void Init(string GUID, ConfigFile config, bool saveOnConfigSet = false)
         {
             configFile = config;
-            configFile.SaveOnConfigSet = false;
-        }
-
-        public static void SetUpConfig()
-        {
-            Verbosity = BindConfig(
-                MainSection,
-                "Verbosity",
-                LoggerLevel.Low,
-                "Low will log basic information about the mod. Medium will log information that is useful for troubleshooting. High will log a lot of information, do not set it to this without good reason as it will slow down your game.",
-                synced: false
-            );
-
-            EnableIndividualSettings = BindConfig(
-                MainSection,
-                "IndividualSettings",
-                false,
-                "Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the XPMult values from the IndividualSKills section are used for each vanilla skill."
-            );
-
-            XPMult = BindConfig(
-                Mechanics,
-                "XPMult",
-                1.5f,
-                "Used to control the rate at which the active level increases, 1=base game, 1.5=50% bonus xp awarded, 0.8=20% less xp awarded.",
-                new AcceptableValueRange<float>(0.0f, 10f)
-            );
-
-            FortifyLevelRate = BindConfig(
-                Mechanics,
-                "FortifyXPPerLevelRate",
-                0.1f,
-                "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill before any XP multipliers have been applied.",
-                new AcceptableValueRange<float>(0.0f, 1f)
-            );
-
-            FortifyXPRateMax = BindConfig(
-                Mechanics,
-                "FortifyXPRateMax",
-                0.8f,
-                "Used to control the maximum rate of XP earned for the fortified skill. Caps FortifyXPPerLevelRate. Values less than 1 mean the fortify skill will always increase more slowly than the active level. 0.8=Will gain a max of 80% of the XP gained for the active skill.",
-                new AcceptableValueRange<float>(0.0f, 2.0f)
-            );
-
-            // Create config entries for individual skills in the base game
-            if (IsVerbosityMedium)
-            {
-                Log.LogInfo($"{Skills.s_allSkills.Count()} SkillTypes are defined in base game.");
-            }
-
-            foreach (var skillType in Skills.s_allSkills)
-            {
-                string skillName = skillType.ToString();
-
-                if (skillName != null && skillType != Skills.SkillType.None && skillType != Skills.SkillType.All)
-                {
-                    if (IsVerbosityMedium)
-                    {
-                        Log.LogInfo($"Adding {skillName} to config.");
-                    }
-                    SkillConfigEntries.Add(
-                    skillName,
-                    BindConfig(
-                        SkillsSection,
-                        SetStringPriority($"{skillName}_XPMult", 1),
-                        1.5f,
-                        $"XP Multiplier for {skillName} skill. Only used if IndividualSettings is set to true",
-                        new AcceptableValueRange<float>(0.0f, 10.0f)
-                    )
-                );
-                }
-            }
-
-            ModdedSkillXPMult = BindConfig(
-                SkillsSection,
-                "ModdedSkill_XPMult",
-                1.0f,
-                "XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multiplier settings). Only used if IndividualSettings is set to true.",
-                new AcceptableValueRange<float>(0.0f, 10f)
-            );
-            Save();
+            configFile.SaveOnConfigSet = saveOnConfigSet;
+            ConfigFileName = GUID + ".cfg";
+            ConfigFileFullPath = Path.Combine(Paths.ConfigPath, ConfigFileName);
         }
 
         /// <summary>
@@ -224,7 +113,7 @@ namespace FortifySkillsRedux.Configs
         ///     the value prior to calling this method.
         /// </summary>
         /// <returns></returns>
-        private static bool DisableSaveOnConfigSet()
+        internal static bool DisableSaveOnConfigSet()
         {
             var val = configFile.SaveOnConfigSet;
             configFile.SaveOnConfigSet = false;
