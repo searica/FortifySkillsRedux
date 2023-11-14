@@ -18,10 +18,7 @@ namespace FortifySkillsRedux.Patches
         [HarmonyPatch(nameof(Skills.Skill.Raise))]
         private static void RaiseFortifySkill(Skills.Skill __instance, ref float factor)
         {
-            if (ConfigManager.IsVerbosityMedium)
-            {
-                Log.LogInfo("Raising XP for Fortified skill");
-            }
+            Log.LogInfo("Raising XP for Fortified skill", LogLevel.Medium);
 
             // calculate XP gained for the skill (used for getting fortified skill level XP)
             float baseXP = __instance.m_info.m_increseStep * factor;
@@ -40,11 +37,11 @@ namespace FortifySkillsRedux.Patches
             if (fortSkill.FortifyLevel < 100f)
             {
                 fortSkill.FortifyAccumulator += baseXP * Mathf.Clamp(
-                        (__instance.m_level - fortSkill.FortifyLevel) * ConfigManager.FortifyLevelRate.Value,
+                        (__instance.m_level - fortSkill.FortifyLevel) * FortifySkillsRedux.FortifyLevelRate.Value,
                         0.0f,
-                        ConfigManager.FortifyXPRateMax.Value
+                        FortifySkillsRedux.FortifyXPRateMax.Value
                     );
-                if (ConfigManager.IsVerbosityHigh) { Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator); }
+                Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator, LogLevel.Medium);
                 if (fortSkill.FortifyAccumulator >= GetLevelUpXpRequirement(fortSkill.FortifyLevel))
                 {
                     // Set level up message type
@@ -54,10 +51,8 @@ namespace FortifySkillsRedux.Patches
                     fortSkill.FortifyLevel = Mathf.Clamp(fortSkill.FortifyLevel + 1f, 0f, 100f);
                     fortSkill.FortifyAccumulator = 0f;
 
-                    if (ConfigManager.IsVerbosityMedium)
-                    {
-                        Debug.Log("Fortify level:" + fortSkill.FortifyLevel);
-                    }
+                    Log.LogInfo("Fortify level:" + fortSkill.FortifyLevel, LogLevel.Medium);
+
                     // Display level up effect
                     var player = Player.m_localPlayer;
                     GameObject vfx_prefab = ZNetScene.instance.GetPrefab("vfx_ColdBall_launch");
@@ -92,26 +87,23 @@ namespace FortifySkillsRedux.Patches
         [HarmonyPatch(nameof(Skills.Skill.Raise))]
         private static void ActiveSkillXpMultiplier(Skills.Skill __instance, ref float factor)
         {
-            if (ConfigManager.IsVerbosityMedium)
-            {
-                Log.LogInfo("Applying active skill XP multiplier");
-            }
+            Log.LogInfo("Applying active skill XP multiplier", LogLevel.Medium);
 
             // modify XP gain rate
-            if (ConfigManager.EnableIndividualSettings.Value)
+            if (FortifySkillsRedux.EnableIndividualSettings.Value)
             {
-                if (ConfigManager.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
+                if (FortifySkillsRedux.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
                 {
-                    factor *= ConfigManager.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
+                    factor *= FortifySkillsRedux.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
                 }
                 else
                 {
-                    factor *= ConfigManager.ModdedSkillXPMult.Value;
+                    factor *= FortifySkillsRedux.ModdedSkillXPMult.Value;
                 }
             }
             else
             {
-                factor *= ConfigManager.XPMult.Value;
+                factor *= FortifySkillsRedux.XPMult.Value;
             }
         }
     }

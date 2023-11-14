@@ -12,10 +12,8 @@ namespace FortifySkillsRedux
         [HarmonyPatch(nameof(SkillsDialog.Setup))]
         private static void SkillsDialogSetupPostfix(SkillsDialog __instance, Player player)
         {
-            if (ConfigManager.IsVerbosityMedium)
-            {
-                Log.LogInfo("SkillsDialog.Setup.Postfix()");
-            }
+            Log.LogInfo("SkillsDialog.Setup.Postfix()", LogLevel.Medium);
+
             List<Skills.Skill> skillList = player.GetSkills().GetSkillList();
 
             foreach (var element in __instance.m_elements)
@@ -35,10 +33,7 @@ namespace FortifySkillsRedux
                         }
                         else
                         {
-                            if (ConfigManager.IsVerbosityMedium)
-                            {
-                                Log.LogInfo($"No Fortified skill for: {skill.m_info.m_skill}");
-                            }
+                            Log.LogInfo($"No Fortified skill for: {skill.m_info.m_skill}", LogLevel.Medium);
                         }
 
                         break;

@@ -5,6 +5,16 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.0.6</td>
+			<td align="left">
+				<ul>
+					<li>Updated icon and README.</li>
+					<li>Recompiled against newest game version.</li>
+					<li>Fix issue with changes made using the in-game configuration manager not saving properly if the game crashes.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.5</td>
 			<td align="left">
 				<ul>
