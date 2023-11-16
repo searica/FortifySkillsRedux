@@ -1,7 +1,7 @@
 {
   "name": "FortifySkillsRedux",
   "author": "Searica",
-  "version_number": "1.0.6",
+  "version_number": "1.0.7",
   "website_url": "https://discord.gg/sFmGTBYN6n",
   "description": "FortifySkillsRedux changes skill loss on death. Instead of being punished for dying by losing 5% of each skill, you are rewarded for staying alive longer. Each skill has a new fortified skill level that it resets to when you die.",
   "dependencies": [
