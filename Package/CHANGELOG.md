@@ -5,6 +5,14 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.0.7</td>
+			<td align="left">
+				<ul>
+					<li>Minor fix to reduce unnecessary saving of the configuration file when no changes have occurred.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.6</td>
 			<td align="left">
 				<ul>
