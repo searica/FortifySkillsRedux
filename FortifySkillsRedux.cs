@@ -192,7 +192,7 @@ namespace FortifySkillsRedux
 
         internal static void LogInfo(object data, LogLevel level = LogLevel.Low)
         {
-            if (VerbosityLevel >= level)
+            if (Verbosity is null || VerbosityLevel >= level)
             {
                 _logSource.LogInfo(data);
             }
