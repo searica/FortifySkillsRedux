@@ -14,7 +14,7 @@ namespace FortifySkillsRedux
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
     [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
-    public class FortifySkillsRedux : BaseUnityPlugin
+    internal sealed class FortifySkillsRedux : BaseUnityPlugin
     {
         public const string PluginName = "FortifySkillsRedux";
         internal const string Author = "Searica";
@@ -167,7 +167,7 @@ namespace FortifySkillsRedux
 
         #endregion Verbosity
 
-        private static ManualLogSource _logSource;
+        private static ManualLogSource logSource;
 
         private const BindingFlags AllBindings =
             BindingFlags.Public
@@ -181,26 +181,26 @@ namespace FortifySkillsRedux
 
         internal static void Init(ManualLogSource logSource)
         {
-            _logSource = logSource;
+            Log.logSource = logSource;
         }
 
-        internal static void LogDebug(object data) => _logSource.LogDebug(data);
+        internal static void LogDebug(object data) => logSource.LogDebug(data);
 
-        internal static void LogError(object data) => _logSource.LogError(data);
+        internal static void LogError(object data) => logSource.LogError(data);
 
-        internal static void LogFatal(object data) => _logSource.LogFatal(data);
+        internal static void LogFatal(object data) => logSource.LogFatal(data);
 
         internal static void LogInfo(object data, LogLevel level = LogLevel.Low)
         {
             if (Verbosity is null || VerbosityLevel >= level)
             {
-                _logSource.LogInfo(data);
+                logSource.LogInfo(data);
             }
         }
 
-        internal static void LogMessage(object data) => _logSource.LogMessage(data);
+        internal static void LogMessage(object data) => logSource.LogMessage(data);
 
-        internal static void LogWarning(object data) => _logSource.LogWarning(data);
+        internal static void LogWarning(object data) => logSource.LogWarning(data);
 
         #region Logging Unity Objects
 

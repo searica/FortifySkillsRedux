@@ -6,7 +6,7 @@ namespace FortifySkillsRedux.Patches
     ///     Reset Fortify Skills when resetcharacter console command is used
     /// </summary>
     [HarmonyPatch(typeof(Player))]
-    internal class PlayerPatch
+    internal static class PlayerPatch
     {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(Player.ResetCharacter))]
