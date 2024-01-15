@@ -9,17 +9,15 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FortifySkillsRedux
-{
+namespace FortifySkillsRedux {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
     [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
-    internal sealed class FortifySkillsRedux : BaseUnityPlugin
-    {
+    internal sealed class FortifySkillsRedux : BaseUnityPlugin {
         public const string PluginName = "FortifySkillsRedux";
         internal const string Author = "Searica";
         public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "1.0.7";
+        public const string PluginVersion = "1.0.8";
 
         private static readonly string MainSection = ConfigManager.SetStringPriority("Global", 2);
         private static readonly string Mechanics = ConfigManager.SetStringPriority("Mechanics", 1);
@@ -35,8 +33,7 @@ namespace FortifySkillsRedux
 
         private static bool ShouldSave = false;
 
-        public void Awake()
-        {
+        public void Awake() {
             Log.Init(Logger);
 
             ConfigManager.Init(PluginGUID, Config, false);
@@ -48,23 +45,19 @@ namespace FortifySkillsRedux
 
             ConfigManager.SetupWatcher();
             ConfigManager.CheckForConfigManager();
-            ConfigManager.OnConfigWindowClosed += delegate
-            {
-                if (ShouldSave)
-                {
+            ConfigManager.OnConfigWindowClosed += delegate {
+                if (ShouldSave) {
                     ConfigManager.Save();
                     ShouldSave = false;
                 }
             };
         }
 
-        public void OnDestroy()
-        {
+        public void OnDestroy() {
             ConfigManager.Save();
         }
 
-        internal static void SetUpConfigEntries()
-        {
+        internal static void SetUpConfigEntries() {
             Log.Verbosity = ConfigManager.BindConfig(
                 MainSection,
                 "Verbosity",
@@ -112,12 +105,10 @@ namespace FortifySkillsRedux
             // Create config entries for individual skills in the base game
             Log.LogInfo($"{Skills.s_allSkills.Count()} SkillTypes are defined in base game.", LogLevel.Medium);
 
-            foreach (var skillType in Skills.s_allSkills)
-            {
+            foreach (var skillType in Skills.s_allSkills) {
                 string skillName = skillType.ToString();
 
-                if (skillName != null && skillType != Skills.SkillType.None && skillType != Skills.SkillType.All)
-                {
+                if (skillName != null && skillType != Skills.SkillType.None && skillType != Skills.SkillType.All) {
                     Log.LogInfo($"Adding {skillName} to config.", LogLevel.Medium);
                     var configEntry = ConfigManager.BindConfig(
                         SkillsSection,
@@ -148,8 +139,7 @@ namespace FortifySkillsRedux
     /// <summary>
     ///     Log level to control output to BepInEx log
     /// </summary>
-    internal enum LogLevel
-    {
+    internal enum LogLevel {
         Low = 0,
         Medium = 1,
         High = 2,
@@ -158,8 +148,7 @@ namespace FortifySkillsRedux
     /// <summary>
     ///     Helper class for properly logging from static contexts.
     /// </summary>
-    internal static class Log
-    {
+    internal static class Log {
         #region Verbosity
 
         internal static ConfigEntry<LogLevel> Verbosity { get; set; }
@@ -179,8 +168,7 @@ namespace FortifySkillsRedux
             | BindingFlags.GetProperty
             | BindingFlags.SetProperty;
 
-        internal static void Init(ManualLogSource logSource)
-        {
+        internal static void Init(ManualLogSource logSource) {
             Log.logSource = logSource;
         }
 
@@ -190,10 +178,8 @@ namespace FortifySkillsRedux
 
         internal static void LogFatal(object data) => logSource.LogFatal(data);
 
-        internal static void LogInfo(object data, LogLevel level = LogLevel.Low)
-        {
-            if (Verbosity is null || VerbosityLevel >= level)
-            {
+        internal static void LogInfo(object data, LogLevel level = LogLevel.Low) {
+            if (Verbosity is null || VerbosityLevel >= level) {
                 logSource.LogInfo(data);
             }
         }
@@ -204,40 +190,33 @@ namespace FortifySkillsRedux
 
         #region Logging Unity Objects
 
-        internal static void LogGameObject(GameObject prefab, bool includeChildren = false)
-        {
+        internal static void LogGameObject(GameObject prefab, bool includeChildren = false) {
             LogInfo("***** " + prefab.name + " *****");
-            foreach (Component compo in prefab.GetComponents<Component>())
-            {
+            foreach (Component compo in prefab.GetComponents<Component>()) {
                 LogComponent(compo);
             }
 
             if (!includeChildren) { return; }
 
             LogInfo("***** " + prefab.name + " (children) *****");
-            foreach (Transform child in prefab.transform)
-            {
+            foreach (Transform child in prefab.transform) {
                 LogInfo($" - {child.gameObject.name}");
-                foreach (Component compo in child.gameObject.GetComponents<Component>())
-                {
+                foreach (Component compo in child.gameObject.GetComponents<Component>()) {
                     LogComponent(compo);
                 }
             }
         }
 
-        internal static void LogComponent(Component compo)
-        {
+        internal static void LogComponent(Component compo) {
             LogInfo($"--- {compo.GetType().Name}: {compo.name} ---");
 
             PropertyInfo[] properties = compo.GetType().GetProperties(AllBindings);
-            foreach (var property in properties)
-            {
+            foreach (var property in properties) {
                 LogInfo($" - {property.Name} = {property.GetValue(compo)}");
             }
 
             FieldInfo[] fields = compo.GetType().GetFields(AllBindings);
-            foreach (var field in fields)
-            {
+            foreach (var field in fields) {
                 LogInfo($" - {field.Name} = {field.GetValue(compo)}");
             }
         }

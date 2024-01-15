@@ -5,6 +5,14 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.0.8</td>
+			<td align="left">
+				<ul>
+					<li>Improved compatibility with DeathTweaks. Skills will now override DeathTweaks and be reset to the correct FortifySkill level.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.7</td>
 			<td align="left">
 				<ul>
