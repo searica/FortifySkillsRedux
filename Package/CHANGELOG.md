@@ -5,6 +5,15 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.0.9</td>
+			<td align="left">
+				<ul>
+					<li>Made FortifySkillsRedux override the forced skill loss in Hardcore mode. Fortified skills will behave as intended regardless of in-game skill loss settings.</li>
+					<li>Updated Jotunn version.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.8</td>
 			<td align="left">
 				<ul>
