@@ -1,5 +1,4 @@
-﻿using FortifySkillsRedux.Configs;
-using HarmonyLib;
+﻿using HarmonyLib;
 using UnityEngine;
 
 namespace FortifySkillsRedux.Patches
@@ -23,6 +22,7 @@ namespace FortifySkillsRedux.Patches
             // calculate XP gained for the skill (used for getting fortified skill level XP)
             float baseXP = __instance.m_info.m_increseStep * factor;
 
+            // Get or add FortifySkill data
             FortifySkillData fortSkill;
             if (FortifySkillData.s_FortifySkillValues.ContainsKey(__instance.m_info.m_skill))
             {
@@ -34,44 +34,64 @@ namespace FortifySkillsRedux.Patches
                 FortifySkillData.s_FortifySkillValues[__instance.m_info.m_skill] = fortSkill;
             }
 
-            if (fortSkill.FortifyLevel < 100f)
+            // Early return if can't raise FortifySkill
+            if (fortSkill.FortifyLevel >= 100f)
             {
-                fortSkill.FortifyAccumulator += baseXP * Mathf.Clamp(
-                        (__instance.m_level - fortSkill.FortifyLevel) * FortifySkillsRedux.FortifyLevelRate.Value,
-                        0.0f,
-                        FortifySkillsRedux.FortifyXPRateMax.Value
-                    );
-                Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator, LogLevel.Medium);
-                if (fortSkill.FortifyAccumulator >= GetLevelUpXpRequirement(fortSkill.FortifyLevel))
-                {
-                    // Set level up message type
-                    var type = (int)fortSkill.FortifyLevel == 0 ? MessageHud.MessageType.Center : MessageHud.MessageType.TopLeft;
+                return;
+            }
 
-                    // Level up Fortify skill
-                    fortSkill.FortifyLevel = Mathf.Clamp(fortSkill.FortifyLevel + 1f, 0f, 100f);
-                    fortSkill.FortifyAccumulator = 0f;
+            // Compute new XP value
+            fortSkill.FortifyAccumulator += baseXP * Mathf.Clamp(
+                (__instance.m_level - fortSkill.FortifyLevel) * FortifySkillsRedux.GetFortifyRate(__instance),
+                0.0f,
+                FortifySkillsRedux.FortifyXPRateMax.Value
+            );
+            Log.LogInfo("Fortify XP:" + fortSkill.FortifyAccumulator, LogLevel.Medium);
 
-                    Log.LogInfo("Fortify level:" + fortSkill.FortifyLevel, LogLevel.Medium);
-
-                    // Display level up effect
-                    var player = Player.m_localPlayer;
-                    GameObject vfx_prefab = ZNetScene.instance.GetPrefab("vfx_ColdBall_launch");
-                    GameObject sfx_prefab = player.m_skillLevelupEffects.m_effectPrefabs[1].m_prefab;
-
-                    Object.Instantiate(vfx_prefab, player.GetHeadPoint(), Quaternion.Euler(-90f, 0, 0));
-                    Object.Instantiate(sfx_prefab, player.GetHeadPoint(), Quaternion.identity);
-
-                    // Display level up message
-                    player.Message(
-                        type,
-                        $"Fortified skill improved {fortSkill.SkillName}: {(int)fortSkill.FortifyLevel}",
-                        0,
-                        fortSkill.Info.m_icon
-                    );
-                }
+            // Level up FortifySkill if XP threshold reached
+            if (fortSkill.FortifyAccumulator >= GetLevelUpXpRequirement(fortSkill.FortifyLevel))
+            {
+                LevelUpFortifySkill(fortSkill);
             }
         }
 
+        /// <summary>
+        ///     Level up FortifySkill and play effect/notify player.
+        /// </summary>
+        /// <param name="fortifySkill"></param>
+        private static void LevelUpFortifySkill(FortifySkillData fortifySkill)
+        {
+            // Set level up message type
+            var type = (int)fortifySkill.FortifyLevel == 0 ? MessageHud.MessageType.Center : MessageHud.MessageType.TopLeft;
+
+            // Level up Fortify skill
+            fortifySkill.FortifyLevel = Mathf.Clamp(fortifySkill.FortifyLevel + 1f, 0f, 100f);
+            fortifySkill.FortifyAccumulator = 0f;
+
+            Log.LogInfo("Fortify level:" + fortifySkill.FortifyLevel, LogLevel.Medium);
+
+            // Display level up effect
+            var player = Player.m_localPlayer;
+            GameObject vfx_prefab = ZNetScene.instance.GetPrefab("vfx_ColdBall_launch");
+            GameObject sfx_prefab = player.m_skillLevelupEffects.m_effectPrefabs[1].m_prefab;
+
+            Object.Instantiate(vfx_prefab, player.GetHeadPoint(), Quaternion.Euler(-90f, 0, 0));
+            Object.Instantiate(sfx_prefab, player.GetHeadPoint(), Quaternion.identity);
+
+            // Display level up message
+            player.Message(
+                type,
+                $"Fortified skill improved {fortifySkill.SkillName}: {(int)fortifySkill.FortifyLevel}",
+                0,
+                fortifySkill.Info.m_icon
+            );
+        }
+
+        /// <summary>
+        ///     Compute XP required to level up.
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
         private static float GetLevelUpXpRequirement(float level)
         {
             return Mathf.Pow(level + 1f, 1.5f) * 0.5f + 0.5f;
@@ -90,21 +110,7 @@ namespace FortifySkillsRedux.Patches
             Log.LogInfo("Applying active skill XP multiplier", LogLevel.Medium);
 
             // modify XP gain rate
-            if (FortifySkillsRedux.EnableIndividualSettings.Value)
-            {
-                if (FortifySkillsRedux.SkillConfigEntries.ContainsKey(__instance.m_info.m_skill.ToString()))
-                {
-                    factor *= FortifySkillsRedux.SkillConfigEntries[__instance.m_info.m_skill.ToString()].Value;
-                }
-                else
-                {
-                    factor *= FortifySkillsRedux.ModdedSkillXPMult.Value;
-                }
-            }
-            else
-            {
-                factor *= FortifySkillsRedux.XPMult.Value;
-            }
+            factor *= FortifySkillsRedux.GetXPMult(__instance);
         }
     }
 }

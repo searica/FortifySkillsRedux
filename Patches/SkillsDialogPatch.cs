@@ -1,5 +1,4 @@
-﻿using FortifySkillsRedux.Configs;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Collections.Generic;
 using TMPro;
 
