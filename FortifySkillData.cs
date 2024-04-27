@@ -67,7 +67,7 @@ namespace FortifySkillsRedux
             return $"$skill_{fortSkill.Info.m_skill.ToString().ToLower()}";
         }
 
-        public static string GetLocalizedSkillName(SkillType skillType)
+        public static string LocalizeSkillName(SkillType skillType)
         {
             return $"$skill_{skillType.ToString().ToLower()}";
         }
