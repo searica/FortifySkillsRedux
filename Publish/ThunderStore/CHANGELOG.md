@@ -5,6 +5,14 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.1.0</td>
+			<td align="left">
+				<ul>
+					<li>Changed Config file layout and added settings for FortifyLevelUpRate for each skill individually.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.9</td>
 			<td align="left">
 				<ul>
