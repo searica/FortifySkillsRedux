@@ -19,7 +19,7 @@ namespace FortifySkillsRedux
         public const string PluginName = "FortifySkillsRedux";
         internal const string Author = "Searica";
         public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "1.1.0";
+        public const string PluginVersion = "1.2.0";
 
         private static readonly string MainSection = ConfigManager.SetStringPriority("Global", 3);
         private static readonly string Mechanics = ConfigManager.SetStringPriority("Mechanics", 2);
