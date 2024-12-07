@@ -6,6 +6,6 @@
   "description": "FortifySkillsRedux changes skill loss on death. Instead of being punished for dying by losing 5% of each skill, you are rewarded for staying alive longer. Each skill has a new fortified skill level that it resets to when you die.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2202",
-    "ValheimModding-Jotunn-2.21.3"
+    "ValheimModding-Jotunn-2.22.0"
   ]
 }

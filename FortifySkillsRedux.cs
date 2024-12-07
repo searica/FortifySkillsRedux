@@ -7,19 +7,19 @@ using FortifySkillsRedux.Configs;
 using BepInEx.Configuration;
 using System.Linq;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace FortifySkillsRedux
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
     [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
+    [SynchronizationMode(AdminOnlyStrictness.IfOnServer)]
     internal sealed class FortifySkillsRedux : BaseUnityPlugin
     {
         public const string PluginName = "FortifySkillsRedux";
         internal const string Author = "Searica";
         public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "1.3.0";
+        public const string PluginVersion = "1.3.1";
 
         private static readonly string MainSection = ConfigManager.SetStringPriority("Global", 3);
         private static readonly string Mechanics = ConfigManager.SetStringPriority("Mechanics", 2);
