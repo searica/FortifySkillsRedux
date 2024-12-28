@@ -36,6 +36,9 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
     internal SkillConfig GlobalSkillConfig { get; private set; }
 
     internal ConfigEntry<bool> EnableIndividualSettings { get; private set; }
+
+    internal ConfigEntry<bool> KeepAllItemsOnDeath { get; private set; }
+    internal ConfigEntry<bool> KeepEquippedItemsOnDeath { get; private set; }
     internal SkillConfig ModdedSkillConfig { get; private set; }
 
     internal Dictionary<Skills.SkillType, SkillConfig> SkillConfigsMap = [];
@@ -81,6 +84,20 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
             synced: false
         );
         Log.Verbosity.SettingChanged += delegate { if (!ShouldSave) { ShouldSave = true; } };
+
+        KeepAllItemsOnDeath = Config.Bind(
+            MainSection,
+            "Keep All Items on Death",
+            false,
+            "Whether to keep all items on death."
+        );
+
+        KeepEquippedItemsOnDeath = Config.Bind(
+            MainSection,
+            "Keep Equipped Items on Death",
+            false,
+            "Whether to keep your equiped items when you die."
+        );
 
         EnableIndividualSettings = Config.BindConfigInOrder(
             MainSection,
