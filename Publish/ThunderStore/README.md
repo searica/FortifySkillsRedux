@@ -1,7 +1,10 @@
-## FortifySkillsRedux
+# FortifySkillsRedux
 FortifySkillsRedux is a remake of the FortifySkills mod for Valheim that changes how skills are lost on death. Rather than being punished for dying by losing a flat 5% of every skill, you are instead rewarded for staying alive for longer. This is achieved by adding a new fortified skill level for each skill that is used when you die to reset your skills to their fortified skill level. This means that no matter how many times you die, your skills will never drop below their fortified skill levels.
 
 **Server-Side Info**: This mod does work as a client-side only mod and only needs to be installed on the server if you wish to enforce configuration settings.
+
+## Version 1.4.0 Notice
+Configuration settings have changed! Please delete your config file and let the mod regenerate if if you're having any issues.
 
 ## Installation
 **Via Mod Manager (Recommended)**
@@ -32,34 +35,27 @@ Changes made to the configuration settings will be reflected in-game immediately
     - Acceptable values: Low, Medium, High
     - Default value: Low.
 
-**EnableIndividualSettings [Synced with Server]**
-- Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the XPMult values from the IndividualSKills section are used for each vanilla skill (skills added by mods are always modified based on the XPMult value from the Mechanics section).
+**Use Inidividual Settings [Synced with Server]**
+- If enabled, use the config settings for each individual Vanilla skill and the Modded skill config settings for all skills added by mods. If disabled use the config setting from the Mechanics section for all skills.
     - Acceptable values: False, True
     - Default value: false.
 
 ### Mechanics
-**XPMult [Synced with Server]**
-- Used to control the rate at which the active level increases, 1=base game, 1.5=50% bonus xp awarded, 0.8=20% less xp awarded.
+**Active Skill XP Multiplier [Synced with Server]**
+- Controls XP gained for the active skill level. 1 = base game XP, 1.5 = 50% bonus XP, 0.8 = 20% less XP.
     - Default value: 1.5
 
-**FortifyXPPerLevelRate [Synced with Server]**
-- "Used to control the rate at which the fortified skill XP increases PER LEVEL behind the active level. 0.1=Will gain 10% XP for every level behind the active level. Note that this is a percentage of the XP earned towards the active skill before any XP multipliers have been applied.
-    - Default value: 0.1
-
-**FortifyXPRateMax [Synced with Server]**
-- Used to control the maximum rate of XP earned for the fortified skill. Caps FortifyXPPerLevelRate. Values less than 1 mean the fortify skill will always increase more slowly than the active level. 0.8=Will gain a max of 80% of the XP gained for the active skill.
+**Max Fortify Skill XP Rate [Synced with Server]**
+- Controls maximum rate of XP earned for the fortified skill as a percentage of vanilla XP rates. Values below 1 mean that fortified skills will always increase slower than vanilla skills. Values above 1 mean that fortified skills can increase faster than vanilla skills if your active skill level is high enough.
     - Default value: 0.8
 
+**Fortify Skill XP Per Level [Synced with Server]**
+- Controls XP gained for the fortified skill. For every level the active skill is above the fortified skill increase the percentage of XP gained for the fortified skill by this amount up to Max Fortify Skill XP Rate.
+    - Default value: 0.1
+
 ### IndividualSkills Section
-There is one entry in this section for each skill in the Vanilla game.
-
-**SkillName_XPMult [Synced with Server]**
-- XP Multiplier for {skillName} skill. Only used if EnableIndividualSettings is set to true.
-    - Default value: 1.5
-
-**ModdedSkill_XPMult [Synced with Server]**
-- XP Multiplier for skills added by mods (default value is 1.0 since most skill mods have their own XP multiplier settings). Only used if EnableIndividualSettings is set to true.
-    - Default value: 1.0
+There is a section with the same config settigns for each skill in the Vanilla game and one additional section for all skills added by mods. 
+These settings are only used if Use Individual Settings is Enabled and they allow you to customize the XP gains for each individual skill.
 
 
 ## Compatibility
@@ -100,7 +96,6 @@ This mod is based on the original one made by Merlyn42 and the patched version w
 If you like this mod you might like some of my other ones.
 
 #### Building Mods
-- [More Vanilla Build Prefabs](https://thunderstore.io/c/valheim/p/Searica/More_Vanilla_Build_Prefabs/)
 - [Extra Snap Points Made Easy](https://thunderstore.io/c/valheim/p/Searica/Extra_Snap_Points_Made_Easy/)
 - [AdvancedTerrainModifiers](https://thunderstore.io/c/valheim/p/Searica/AdvancedTerrainModifiers/)
 - [BuildRestrictionTweaksSync](https://thunderstore.io/c/valheim/p/Searica/BuildRestrictionTweaksSync/)
@@ -109,6 +104,12 @@ If you like this mod you might like some of my other ones.
 #### Gameplay Mods
 - [CameraTweaks](https://thunderstore.io/c/valheim/p/Searica/CameraTweaks/)
 - [DodgeShortcut](https://thunderstore.io/c/valheim/p/Searica/DodgeShortcut/)
+- [DiscoveryPins](https://thunderstore.io/c/valheim/p/Searica/DiscoveryPins/)
 - [ProjectileTweaks](https://thunderstore.io/c/valheim/p/Searica/ProjectileTweaks/)
 - [SkilledCarryWeight](https://thunderstore.io/c/valheim/p/Searica/SkilledCarryWeight/)
 - [SafetyStatus](https://thunderstore.io/c/valheim/p/Searica/SafetyStatus/)
+- [WatchWhereYouStab](https://thunderstore.io/c/valheim/p/Searica/WatchWhereYouStab/)
+
+#### Networking Mods
+- [NetworkTweaks](https://thunderstore.io/c/valheim/p/Searica/NetworkTweaks/)
+- [OpenSesame](https://thunderstore.io/c/valheim/p/Searica/OpenSesame/)
