@@ -73,6 +73,7 @@
 
 	<ItemGroup>
 		<None Include="App.config" />
+		<None Include="C:\Users\TheUser\Documents\GitHub\FortifySkillsRedux\.editorconfig" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -85,4 +86,8 @@
 		</PropertyGroup>
 		<Error Condition="!Exists('$(JotunnProps)')" Text="$([System.String]::Format('$(ErrorText)', '$(JotunnProps)'))" />
 	</Target>
+
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Users\TheUser\Documents\GitHub\FortifySkillsRedux\.editorconfig" />
+	</ItemGroup>
 </Project>
