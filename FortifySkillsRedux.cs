@@ -19,7 +19,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
     public const string PluginName = "FortifySkillsRedux";
     internal const string Author = "Searica";
     public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-    public const string PluginVersion = "1.4.0";
+    public const string PluginVersion = "1.5.0";
 
     private const string MainSection = "Global";
     private const string Mechanics = "Mechanics";
@@ -109,7 +109,6 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
 
         GlobalSkillConfig = BindSkillConfig(Mechanics);
 
-
         // Create config entries for individual skills in the base game
         Log.LogInfo($"{Skills.s_allSkills.Count()} SkillTypes are defined in base game.", Log.InfoLevel.Medium);
         foreach (Skills.SkillType skillType in Skills.s_allSkills)
@@ -130,7 +129,6 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
 
         ModdedSkillConfig = BindSkillConfig(ModdedSkills);
     }
-
 
     internal SkillConfig BindSkillConfig(string section)
     {
@@ -236,6 +234,5 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
         {
             return ModdedSkillConfig.FortifySkillMaxXPRate.Value;
         }
-
     }
 }

@@ -35,7 +35,17 @@ Changes made to the configuration settings will be reflected in-game immediately
     - Acceptable values: Low, Medium, High
     - Default value: Low.
 
-**Use Inidividual Settings [Synced with Server]**
+**Keep All Items on Death [Synced with Server]**
+- Whether to keep all items on death.
+    - Acceptable values: False, True
+    - Default value: false.
+
+**Keep Equipped Items on Death [Synced with Server]**
+- Whether to keep your equiped items when you die."
+    - Acceptable values: False, True
+    - Default value: false.
+
+**Use Individual Settings [Synced with Server]**
 - If enabled, use the config settings for each individual Vanilla skill and the Modded skill config settings for all skills added by mods. If disabled use the config setting from the Mechanics section for all skills.
     - Acceptable values: False, True
     - Default value: false.
