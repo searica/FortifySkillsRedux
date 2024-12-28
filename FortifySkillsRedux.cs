@@ -101,7 +101,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
 
         EnableIndividualSettings = Config.BindConfigInOrder(
             MainSection,
-            "Use Inidividual Settings",
+            "Use Individual Settings",
             false,
             "If enabled, use the config settings for each individual Vanilla skill and the Modded skill config settings for all skills added by mods. If disabled use the config setting from the Mechanics section for all skills."
         );
