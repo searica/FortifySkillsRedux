@@ -84,9 +84,9 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
 
         EnableIndividualSettings = Config.BindConfigInOrder(
             MainSection,
-            "IndividualSettings",
+            "Use Inidividual Settings",
             false,
-            "Used to toggle whether the XPMult value from the Mechanics section is used for all skills or if the XPMult values from the IndividualSKills section are used for each vanilla skill."
+            "If enabled, use the config settings for each individual Vanilla skill and the Modded skill config settings for all skills added by mods. If disabled use the config setting from the Mechanics section for all skills."
         );
         EnableIndividualSettings.SettingChanged += delegate { if (!ShouldSave) { ShouldSave = true; } };
 
