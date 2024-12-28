@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<NuGetPackages>$(UserProfile)\.nuget\packages</NuGetPackages>
-		<JotunnProps>$(NuGetPackages)\jotunnlib\2.20.0\build\JotunnLib.props</JotunnProps>
+		<JotunnProps>$(NuGetPackages)\jotunnlib\2.22.0\build\JotunnLib.props</JotunnProps>
 	</PropertyGroup>
 
-	<!--<Import Project="environment.props" Condition="Exists('environment.props')" />
-	<Import Project="$(JotunnProps)" Condition="Exists('$(JotunnProps)')" />-->
 	<Import Project="ModPackageTool.targets" Condition="Exists('ModPackageTool.targets')" />
 
 	<PropertyGroup>
@@ -14,7 +12,7 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<!--<LangVersion>latest</LangVersion>-->
 		<!--<LangVersion>preview</LangVersion>-->
-		<LangVersion>10.0</LangVersion>
+		<LangVersion>12.0</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -57,13 +55,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Libraries\**" />
+	  <EmbeddedResource Remove="Libraries\**" />
+	  <None Remove="Libraries\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="LICENSE" />
 		<Content Include="README.md" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Libraries" />
-		<Folder Include="Libraries\Debug\" />
 		<Folder Include="Package\" />
 		<Folder Include="Publish\Nexus\" />
 		<Folder Include="Publish\ThunderStore\" />
@@ -75,8 +77,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="JotunnLib" Version="2.22.0" />
-		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	</ItemGroup>
 
 	<Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
