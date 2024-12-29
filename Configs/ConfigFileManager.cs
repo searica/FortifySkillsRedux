@@ -9,7 +9,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Logging;
-using FortifySkillsRedux;
 
 namespace Configs;
 
