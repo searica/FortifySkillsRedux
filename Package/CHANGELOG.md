@@ -5,6 +5,14 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.5.1</td>
+			<td align="left">
+				<ul>
+					<li>Fixed item duplication on death bug.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.5.0</td>
 			<td align="left">
 				<ul>
