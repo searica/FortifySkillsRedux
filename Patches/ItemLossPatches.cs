@@ -9,7 +9,7 @@ internal static class ItemLossPatches
 {
 
     [HarmonyPrefix]
-    [HarmonyPriority(Priority.VeryLow)]
+    [HarmonyPriority(50)]
     [HarmonyPatch(typeof(Player), nameof(Player.CreateTombStone))]
     private static void StoreItems(Player __instance, out Dictionary<ItemDrop.ItemData, bool> __state)
     {
@@ -18,11 +18,16 @@ internal static class ItemLossPatches
         {
             return;
         }
-        List<ItemDrop.ItemData> itemsToDrop = [];
+
         bool keepAll = FortifySkillsRedux.Instance.KeepAllItemsOnDeath.Value;
         bool keepEquipped = FortifySkillsRedux.Instance.KeepEquippedItemsOnDeath.Value;
-        string reason = keepAll ? "KeepAllItems setting" : "KeepEquippedItems setting";
+        if (!keepAll && !keepEquipped)
+        {
+            return;
+        }
 
+        List<ItemDrop.ItemData> itemsToDrop = [];
+        string reason = keepAll ? "KeepAllItems setting" : "KeepEquippedItems setting";
         foreach (ItemDrop.ItemData item in __instance.m_inventory.m_inventory)
         {
             string prefabName = Utils.GetPrefabName(item.m_dropPrefab);
@@ -36,7 +41,6 @@ internal static class ItemLossPatches
             else
             {
                 itemsToDrop.Add(item);
-                __state.Add(item, item.m_equipped);
                 Log.LogDebug($"Dropping {prefabName} from {itemLocation}.");
             }
         }
@@ -45,7 +49,7 @@ internal static class ItemLossPatches
     }
 
     [HarmonyPostfix]
-    [HarmonyPriority(Priority.VeryHigh)]
+    [HarmonyPriority(750)]
     [HarmonyPatch(typeof(Player), nameof(Player.CreateTombStone))]
     private static void RestoreItems(Player __instance, Dictionary<ItemDrop.ItemData, bool> __state)
     {
