@@ -5,6 +5,14 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.5.3</td>
+			<td align="left">
+				<ul>
+					<li>Fixed ordering of the Mechanics section in config file.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.5.2</td>
 			<td align="left">
 				<ul>

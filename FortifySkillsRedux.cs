@@ -21,7 +21,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
     public const string PluginName = "FortifySkillsRedux";
     internal const string Author = "Searica";
     public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-    public const string PluginVersion = "1.5.2";
+    public const string PluginVersion = "1.5.3";
 
     private const string MainSection = "Global";
     private const string Mechanics = "Mechanics";
@@ -109,7 +109,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
         );
         EnableIndividualSettings.SettingChanged += delegate { if (!ShouldSave) { ShouldSave = true; } };
 
-        GlobalSkillConfig = BindSkillConfig(Mechanics);
+        GlobalSkillConfig = BindSkillConfig(Mechanics, true);
 
         // Create config entries for individual skills in the base game
         Log.LogInfo($"{Skills.s_allSkills.Count()} SkillTypes are defined in base game.", Log.InfoLevel.Medium);
@@ -132,7 +132,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
         ModdedSkillConfig = BindSkillConfig(ModdedSkills);
     }
 
-    internal SkillConfig BindSkillConfig(string section)
+    internal SkillConfig BindSkillConfig(string section, bool order = false)
     {
         SkillConfig skillConfig = new()
         {
@@ -141,7 +141,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
                 "Active Skill XP Multiplier",
                 1.5f,
                 "Controls XP gained for the active skill level. 1 = base game XP, 1.5 = 50% bonus XP, 0.8 = 20% less XP.",
-                sectionOrder: false,
+                sectionOrder: order,
                 acceptableValues: new AcceptableValueRange<float>(0.0f, 10f)
             ),
             FortifySkillMaxXPRate = Config.BindConfigInOrder(
@@ -151,7 +151,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
                 "Controls maximum rate of XP earned for the fortified skill as a percentage of vanilla XP rates." +
                 "Values below 1 mean that fortified skills will always increase slower than vanilla skills." +
                 "Values above 1 mean that fortified skills can increase faster than vanilla skills if your active skill level is high enough.",
-                sectionOrder: false,
+                sectionOrder: order,
                 acceptableValues: new AcceptableValueRange<float>(0.0f, 2.0f)
             ),
             FortifySkillXPPerLevel = Config.BindConfigInOrder(
@@ -160,7 +160,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
                 0.1f,
                 "Controls XP gained for the fortified skill. For every level the active skill is above the fortified skill increase" +
                 "the percentage of XP gained for the fortified skill by this amount up to Max Fortify Skill XP Rate.",
-                sectionOrder: false,
+                sectionOrder: order,
                 acceptableValues: new AcceptableValueRange<float>(0.0f, 1f)
             ),
 
