@@ -1,6 +1,8 @@
 ﻿using BepInEx;
 using HarmonyLib;
 using Jotunn.Utils;
+using Jotunn.Extensions;
+using Jotunn.Managers;
 using System.Reflection;
 using BepInEx.Configuration;
 using System.Linq;
@@ -19,13 +21,14 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
     public const string PluginName = "FortifySkillsRedux";
     internal const string Author = "Searica";
     public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-    public const string PluginVersion = "1.5.1";
+    public const string PluginVersion = "1.5.2";
 
     private const string MainSection = "Global";
     private const string Mechanics = "Mechanics";
     private const string ModdedSkills = "Modded Skill Settings";
 
     public static FortifySkillsRedux Instance;
+    internal static ConfigFileWatcher ConfigFileWatcher;
     internal class SkillConfig
     {
         public ConfigEntry<float> ActiveSkillXPMult;
@@ -50,16 +53,15 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
         Instance = this;
         Log.Init(Logger);
 
-        Config.Init(PluginGUID, false);
+        Config.DisableSaveOnConfigSet();
         SetUpConfigEntries();
         Config.Save();
 
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), harmonyInstanceId: PluginGUID);
         Game.isModded = true;
 
-        Config.SetupWatcher();
-        Config.CheckForConfigManager();
-        ConfigFileManager.OnConfigWindowClosed += delegate
+        ConfigFileWatcher = new(Config);
+        SynchronizationManager.OnConfigurationWindowClosed += delegate
         {
             if (ShouldSave)
             {
@@ -85,14 +87,14 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
         );
         Log.Verbosity.SettingChanged += delegate { if (!ShouldSave) { ShouldSave = true; } };
 
-        KeepAllItemsOnDeath = Config.Bind(
+        KeepAllItemsOnDeath = Config.BindConfigInOrder(
             MainSection,
             "Keep All Items on Death",
             false,
             "Whether to keep all items on death."
         );
 
-        KeepEquippedItemsOnDeath = Config.Bind(
+        KeepEquippedItemsOnDeath = Config.BindConfigInOrder(
             MainSection,
             "Keep Equipped Items on Death",
             false,
@@ -139,7 +141,8 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
                 "Active Skill XP Multiplier",
                 1.5f,
                 "Controls XP gained for the active skill level. 1 = base game XP, 1.5 = 50% bonus XP, 0.8 = 20% less XP.",
-                new AcceptableValueRange<float>(0.0f, 10f)
+                sectionOrder: false,
+                acceptableValues: new AcceptableValueRange<float>(0.0f, 10f)
             ),
             FortifySkillMaxXPRate = Config.BindConfigInOrder(
                 section,
@@ -148,7 +151,8 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
                 "Controls maximum rate of XP earned for the fortified skill as a percentage of vanilla XP rates." +
                 "Values below 1 mean that fortified skills will always increase slower than vanilla skills." +
                 "Values above 1 mean that fortified skills can increase faster than vanilla skills if your active skill level is high enough.",
-                new AcceptableValueRange<float>(0.0f, 2.0f)
+                sectionOrder: false,
+                acceptableValues: new AcceptableValueRange<float>(0.0f, 2.0f)
             ),
             FortifySkillXPPerLevel = Config.BindConfigInOrder(
                 section,
@@ -156,7 +160,8 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
                 0.1f,
                 "Controls XP gained for the fortified skill. For every level the active skill is above the fortified skill increase" +
                 "the percentage of XP gained for the fortified skill by this amount up to Max Fortify Skill XP Rate.",
-                new AcceptableValueRange<float>(0.0f, 1f)
+                sectionOrder: false,
+                acceptableValues: new AcceptableValueRange<float>(0.0f, 1f)
             ),
 
         };

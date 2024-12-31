@@ -5,6 +5,16 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.5.2</td>
+			<td align="left">
+				<ul>
+					<li>Fixed ordering of the sections in config file.</li>
+					<li>Changed item drops on death settings to by synced with the server.</li>
+					<li>Updated Jotunn.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.5.1</td>
 			<td align="left">
 				<ul>
