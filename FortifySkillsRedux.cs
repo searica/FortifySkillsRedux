@@ -21,7 +21,7 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
     public const string PluginName = "FortifySkillsRedux";
     internal const string Author = "Searica";
     public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-    public const string PluginVersion = "1.6.0";
+    public const string PluginVersion = "1.6.1";
 
     private const string MainSection = "Global";
     private const string Mechanics = "Mechanics";
@@ -239,5 +239,38 @@ internal sealed class FortifySkillsRedux : BaseUnityPlugin
         {
             return ModdedSkillConfig.FortifySkillMaxXPRate.Value;
         }
+    }
+
+
+    // Public API for mods that want to get info on fortify skill levels
+
+    /// <summary>
+    /// Try to get the fortified skill level for the skill.
+    /// </summary>
+    /// <param name="skill">Skill to get the fortified skill level for.</param>
+    /// <param name="level">Stores fortified skill level, will be 0 if the request skill was not found.</param>
+    /// <returns>Boolean flag indicating if the request skill was found.</returns>
+    public bool TryGetFortifiedSkillLevel(Skills.Skill skill, out float level)
+    {
+        return TryGetFortifiedSkillLevel(skill.m_info.m_skill, out level);
+    }
+
+
+    /// <summary>
+    /// Try to get the fortified skill level for the skill.
+    /// </summary>
+    /// <param name="skillType">Skill type enum value to get the fortified skill level for.</param>
+    /// <param name="level">Stores fortified skill level, will be 0 if the request skill was not found.</param>
+    /// <returns>Boolean flag indicating if the request skill was found.</returns>
+    public bool TryGetFortifiedSkillLevel(Skills.SkillType skillType, out float level)
+    {
+        if (FortifySkillData.s_FortifySkills.ContainsKey(skillType))
+        {
+            level = FortifySkillData.s_FortifySkills[skillType].FortifyLevel;
+            return true;
+        }
+        level = 0;
+        return false;
+
     }
 }

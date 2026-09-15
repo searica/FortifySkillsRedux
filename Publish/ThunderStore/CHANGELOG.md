@@ -5,6 +5,14 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.6.1</td>
+			<td align="left">
+				<ul>
+					<li>Added some public methods to allow other mods to access the current fortified skill level for each skill (per Hexicube's request on Github).</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.6.0</td>
 			<td align="left">
 				<ul>
