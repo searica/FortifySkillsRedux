@@ -16,7 +16,7 @@ namespace FortifySkillsRedux;
 [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
 [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
 [SynchronizationMode(AdminOnlyStrictness.IfOnServer)]
-internal sealed class FortifySkillsRedux : BaseUnityPlugin
+public sealed class FortifySkillsRedux : BaseUnityPlugin
 {
     public const string PluginName = "FortifySkillsRedux";
     internal const string Author = "Searica";
