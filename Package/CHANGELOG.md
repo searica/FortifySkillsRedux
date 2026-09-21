@@ -5,13 +5,15 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
-			<td align="center">1.6.1</td>
+			<td align="center">1.7.0</td>
 			<td align="left">
 				<ul>
+					<li>Aded config settings to control whether you keep containers (such as backpacks) on death, and whether you can keep non-teleportable items on death.</li>
 					<li>Added some public methods to allow other mods to access the current fortified skill level for each skill (per Hexicube's request on Github).</li>
 				</ul>
 			</td>
 		</tr>
+
 		<tr>
 			<td align="center">1.6.0</td>
 			<td align="left">

@@ -7,6 +7,11 @@ namespace FortifySkillsRedux.Patches;
 [HarmonyPatch]
 internal static class ItemLossPatches
 {
+    private static HashSet<string> AdventureBackpacks = new() {
+        "BackpackMeadows", "BackpackBlackForest",  "BackpackSwamp",
+        "BackpackMountains", "BackpackPlains", "BackpackMistlands",
+        "LegacyIronBackpack", "LegacySilverBackpack"
+    };
 
     [HarmonyPrefix]
     [HarmonyPriority(50)]
@@ -18,6 +23,7 @@ internal static class ItemLossPatches
         {
             return;
         }
+
 
         bool keepAll = FortifySkillsRedux.Instance.KeepAllItemsOnDeath.Value;
         bool keepEquipped = FortifySkillsRedux.Instance.KeepEquippedItemsOnDeath.Value;
@@ -32,8 +38,7 @@ internal static class ItemLossPatches
         {
             string prefabName = Utils.GetPrefabName(item.m_dropPrefab);
             string itemLocation = (item.m_gridPos.y == 0) ? "hotbar" : "inventory";
-
-            if (keepAll || (keepEquipped && item.m_equipped))
+            if (CheckIfCanKeep(item))
             {
                 __state.Add(item, item.m_equipped);
                 Log.LogDebug($"Keeping {prefabName} in {itemLocation} due to the {reason}.");
@@ -46,6 +51,45 @@ internal static class ItemLossPatches
         }
 
         __instance.m_inventory.m_inventory = itemsToDrop;
+    }
+
+    private static bool CheckIfCanKeep(ItemDrop.ItemData item)
+    {
+        bool keepAll = FortifySkillsRedux.Instance.KeepAllItemsOnDeath.Value;
+        bool keepEquipped = FortifySkillsRedux.Instance.KeepEquippedItemsOnDeath.Value;
+
+        if (!keepAll && !(keepEquipped && item.m_equipped))
+        {
+            return false;
+        }
+
+        bool keepNonTeleportable = FortifySkillsRedux.Instance.KeepNonTeleportableItemsOnDeath.Value;
+        if (!(item.m_shared.m_teleportable) && !keepNonTeleportable)
+        {
+            return false;
+        }
+
+        // explicitly check for adventure backpacks since they aren't containers
+        if (!FortifySkillsRedux.Instance.KeepContainersOnDeath.Value && AdventureBackpacks.Contains(item.m_dropPrefab.name))
+        {
+            return false;
+        }
+        
+        if (item.m_dropPrefab.TryGetComponent(out Container container) && container)
+        {
+            if (!(FortifySkillsRedux.Instance.KeepContainersOnDeath.Value))
+            {
+                return false;
+            }
+            foreach (ItemDrop.ItemData containerItem in container.m_inventory.m_inventory)
+            {
+                if (!CheckIfCanKeep(containerItem))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     [HarmonyPostfix]

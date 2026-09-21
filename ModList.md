@@ -19,6 +19,9 @@
 - [UnderTheSea](https://thunderstore.io/c/valheim/p/Searica/UnderTheSea/)
 - [WatchWhereYouStab](https://thunderstore.io/c/valheim/p/Searica/WatchWhereYouStab/)
 
+- #### QoL/Utility Mods
+- [KeyBindManager](https://thunderstore.io/c/valheim/p/Searica/KeyBindManager/)
+
 #### Networking Mods
 - [NetworkTweaks](https://thunderstore.io/c/valheim/p/Searica/NetworkTweaks/)
 - [OpenSesame](https://thunderstore.io/c/valheim/p/Searica/OpenSesame/)

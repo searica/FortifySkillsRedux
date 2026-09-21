@@ -21,9 +21,10 @@ public sealed class FortifySkillsRedux : BaseUnityPlugin
     public const string PluginName = "FortifySkillsRedux";
     internal const string Author = "Searica";
     public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-    public const string PluginVersion = "1.6.1";
+    public const string PluginVersion = "1.7.0";
 
     private const string MainSection = "Global";
+    private const string DeathSection = "Item Loss on Death Tweaks";
     private const string Mechanics = "Mechanics";
     private const string ModdedSkills = "Modded Skill Settings";
 
@@ -42,6 +43,11 @@ public sealed class FortifySkillsRedux : BaseUnityPlugin
 
     internal ConfigEntry<bool> KeepAllItemsOnDeath { get; private set; }
     internal ConfigEntry<bool> KeepEquippedItemsOnDeath { get; private set; }
+
+    internal ConfigEntry<bool> KeepContainersOnDeath { get; private set; }
+
+    internal ConfigEntry<bool> KeepNonTeleportableItemsOnDeath { get; private set; }
+
     internal SkillConfig ModdedSkillConfig { get; private set; }
 
     internal Dictionary<Skills.SkillType, SkillConfig> SkillConfigsMap = [];
@@ -87,20 +93,6 @@ public sealed class FortifySkillsRedux : BaseUnityPlugin
         );
         Log.Verbosity.SettingChanged += delegate { if (!ShouldSave) { ShouldSave = true; } };
 
-        KeepAllItemsOnDeath = Config.BindConfigInOrder(
-            MainSection,
-            "Keep All Items on Death",
-            false,
-            "Whether to keep all items on death."
-        );
-
-        KeepEquippedItemsOnDeath = Config.BindConfigInOrder(
-            MainSection,
-            "Keep Equipped Items on Death",
-            false,
-            "Whether to keep your equiped items when you die."
-        );
-
         EnableIndividualSettings = Config.BindConfigInOrder(
             MainSection,
             "Use Individual Settings",
@@ -108,6 +100,36 @@ public sealed class FortifySkillsRedux : BaseUnityPlugin
             "If enabled, use the config settings for each individual Vanilla skill and the Modded skill config settings for all skills added by mods. If disabled use the config setting from the Mechanics section for all skills."
         );
         EnableIndividualSettings.SettingChanged += delegate { if (!ShouldSave) { ShouldSave = true; } };
+
+
+        KeepAllItemsOnDeath = Config.BindConfigInOrder(
+            DeathSection,
+            "Keep All Items on Death",
+            false,
+            "Whether to keep all items on death."
+        );
+
+        KeepEquippedItemsOnDeath = Config.BindConfigInOrder(
+            DeathSection,
+            "Keep Equipped Items on Death",
+            false,
+            "Whether to keep your equiped items when you die."
+        );
+
+        KeepContainersOnDeath = Config.BindConfigInOrder(
+            DeathSection,
+            "Allow Keeping Containers on Death",
+            false,
+            "Whether to allow keeping items that can hold other items (such as a backpack) when you die."
+        );
+
+        KeepNonTeleportableItemsOnDeath = Config.BindConfigInOrder(
+            DeathSection,
+            "Allow Keeping Non-Teleportable Items on Death",
+            false,
+            "Whether to allow keeping items that cannot be teleported when you die (will check inside of backpacks)."
+        );
+
 
         GlobalSkillConfig = BindSkillConfig(Mechanics, true);
 
@@ -250,7 +272,7 @@ public sealed class FortifySkillsRedux : BaseUnityPlugin
     /// <param name="skill">Skill to get the fortified skill level for.</param>
     /// <param name="level">Stores fortified skill level, will be 0 if the request skill was not found.</param>
     /// <returns>Boolean flag indicating if the request skill was found.</returns>
-    public bool TryGetFortifiedSkillLevel(Skills.Skill skill, out float level)
+    public static bool TryGetFortifiedSkillLevel(Skills.Skill skill, out float level)
     {
         return TryGetFortifiedSkillLevel(skill.m_info.m_skill, out level);
     }
@@ -262,7 +284,7 @@ public sealed class FortifySkillsRedux : BaseUnityPlugin
     /// <param name="skillType">Skill type enum value to get the fortified skill level for.</param>
     /// <param name="level">Stores fortified skill level, will be 0 if the request skill was not found.</param>
     /// <returns>Boolean flag indicating if the request skill was found.</returns>
-    public bool TryGetFortifiedSkillLevel(Skills.SkillType skillType, out float level)
+    public static bool TryGetFortifiedSkillLevel(Skills.SkillType skillType, out float level)
     {
         if (FortifySkillData.s_FortifySkills.ContainsKey(skillType))
         {
