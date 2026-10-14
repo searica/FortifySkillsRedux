@@ -5,6 +5,14 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.7.1</td>
+			<td align="left">
+				<ul>
+					<li>Adjusted patch priorty so that changes to skill gain rates in ImpactfulSkills will affect XP towards both the active and fortified skill level.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.7.0</td>
 			<td align="left">
 				<ul>
@@ -13,7 +21,6 @@
 				</ul>
 			</td>
 		</tr>
-
 		<tr>
 			<td align="center">1.6.0</td>
 			<td align="left">

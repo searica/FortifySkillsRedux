@@ -21,7 +21,7 @@ public sealed class FortifySkillsRedux : BaseUnityPlugin
     public const string PluginName = "FortifySkillsRedux";
     internal const string Author = "Searica";
     public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-    public const string PluginVersion = "1.7.0";
+    public const string PluginVersion = "1.7.1";
 
     private const string MainSection = "Global";
     private const string DeathSection = "Item Loss on Death Tweaks";

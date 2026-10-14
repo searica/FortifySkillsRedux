@@ -111,6 +111,7 @@ If you like this mod you might like some of my other ones.
 - [MeasureTwice](https://thunderstore.io/c/valheim/p/Searica/MeasureTwice/)
 
 #### Gameplay Mods
+- [AdrenalineTweaks](https://thunderstore.io/c/valheim/p/Searica/AdrenalineTweaks/)
 - [CameraTweaks](https://thunderstore.io/c/valheim/p/Searica/CameraTweaks/)
 - [DodgeShortcut](https://thunderstore.io/c/valheim/p/Searica/DodgeShortcut/)
 - [DiscoveryPins](https://thunderstore.io/c/valheim/p/Searica/DiscoveryPins/)
@@ -121,15 +122,15 @@ If you like this mod you might like some of my other ones.
 - [SafetyStatus](https://thunderstore.io/c/valheim/p/Searica/SafetyStatus/)
 - [ShowMeTheGoods](https://thunderstore.io/c/valheim/p/Searica/ShowMeTheGoods/)
 - [UnderTheSea](https://thunderstore.io/c/valheim/p/Searica/UnderTheSea/)
+- [QueueEquipChanges](https://thunderstore.io/c/valheim/p/Searica/QueueEquipChanges/)
 - [WatchWhereYouStab](https://thunderstore.io/c/valheim/p/Searica/WatchWhereYouStab/)
 
-- #### QoL/Utility Mods
+#### QoL/Utility Mods
 - [KeyBindManager](https://thunderstore.io/c/valheim/p/Searica/KeyBindManager/)
 
 #### Networking Mods
 - [NetworkTweaks](https://thunderstore.io/c/valheim/p/Searica/NetworkTweaks/)
 - [OpenSesame](https://thunderstore.io/c/valheim/p/Searica/OpenSesame/)
-
 
 # Contributing
 If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on my discord [Searica's Mods](https://discord.gg/sFmGTBYN6n).

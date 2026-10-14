@@ -8,13 +8,31 @@ namespace FortifySkillsRedux.Patches;
 public static class SkillPatch
 {
     /// <summary>
-    ///     Patch to raise XP for fortified skill before
-    ///     XP multipliers are applied by this mod or other mods.
+    ///     Patch to apply XP multiplier from this mod. This is multiplicative with any modifiers
+    ///     from other mods and only applies to the XP gained towards the active skill.
     /// </summary>
     /// <param name="__instance"></param>
     /// <param name="factor"></param>
     [HarmonyPrefix]
-    [HarmonyPriority(Priority.VeryHigh)]
+    [HarmonyPriority(Priority.Last)]
+    [HarmonyPatch(nameof(Skills.Skill.Raise))]
+    private static void ActiveSkillXpMultiplier(Skills.Skill __instance, ref float factor)
+    {
+        Log.LogInfo("Applying active skill XP multiplier", Log.InfoLevel.Medium);
+
+        // modify XP gain rate
+        factor *= FortifySkillsRedux.Instance.GetActiveSkillXPMult(__instance);
+    }
+
+    /// <summary>
+    ///     Patch to raise XP for fortified skill just before the active skill XP multiplier is applied
+    ///     by this mod. That way skill rates changes by other mods (such as impactful skills) will 
+    ///     correctly influence both the active and fortified skill gain rates in this mod.
+    /// </summary>
+    /// <param name="__instance"></param>
+    /// <param name="factor"></param>
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.Last + 1)]
     [HarmonyPatch(nameof(Skills.Skill.Raise))]
     private static void RaiseFortifySkill(Skills.Skill __instance, ref float factor)
     {
@@ -96,21 +114,5 @@ public static class SkillPatch
     private static float GetLevelUpXpRequirement(float level)
     {
         return Mathf.Pow(level + 1f, 1.5f) * 0.5f + 0.5f;
-    }
-
-    /// <summary>
-    ///     Patch to apply XP multiplier from this mod.
-    /// </summary>
-    /// <param name="__instance"></param>
-    /// <param name="factor"></param>
-    [HarmonyPrefix]
-    [HarmonyPriority(Priority.Last)]
-    [HarmonyPatch(nameof(Skills.Skill.Raise))]
-    private static void ActiveSkillXpMultiplier(Skills.Skill __instance, ref float factor)
-    {
-        Log.LogInfo("Applying active skill XP multiplier", Log.InfoLevel.Medium);
-
-        // modify XP gain rate
-        factor *= FortifySkillsRedux.Instance.GetActiveSkillXPMult(__instance);
     }
 }
